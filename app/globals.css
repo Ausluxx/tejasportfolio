@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Merged system — "midnight terminal, editorial finance"
+   Sources: DESIGN.md + DESIGN(1–7).md
+   Void canvas · hairlines over shadows · mono stamps ·
+   italic serif display moments · one ember accent, rationed
+   ============================================================ */
+
+@theme {
+  /* Colors */
+  --color-void: #0a0a0a;
+  --color-panel: #141414;
+  --color-panel-2: #1a1a1a;
+  --color-hairline: #262626;
+  --color-hairline-2: #333333;
+  --color-paper: #f4f2ed;
+  --color-paper-line: #d9d5cc;
+  --color-ink: #111110;
+  --color-bone: #f7f5f0;
+  --color-steel: #8a8a86;
+  --color-ash: #5c5c58;
+  --color-ember: #cc6437;
+  --color-amber: #e8a13c;
+
+  /* Fonts */
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, "JetBrains Mono", Consolas,
+    monospace;
+  --font-serif: var(--font-serif-face), Georgia, serif;
+}
+
+:root {
+  --ease-focus: cubic-bezier(0.52, 0.01, 0, 1);
+}
+
+* {
+  border-color: var(--color-hairline);
+}
+
+html {
+  background: var(--color-void);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-void);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-void);
+}
+
+/* ---------------- Type roles ---------------- */
+
+.t-display {
+  font-size: clamp(56px, 10vw, 128px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-weight: 300;
+}
+.t-display-sm {
+  font-size: clamp(44px, 7vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+}
+.t-heading {
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 300;
+}
+.t-heading-sm {
+  font-size: clamp(23px, 2.6vw, 29px);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+.t-body-lg {
+  font-size: clamp(18px, 1.8vw, 21px);
+  line-height: 1.55;
+  font-weight: 300;
+}
+.t-body {
+  font-size: 16.5px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.t-caption {
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 300;
+}
+
+/* Mono stamp — the boarding-pass voice. Section signposts only. */
+.t-stamp {
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: var(--color-steel);
+}
+.t-stamp-lg {
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 4.6vw, 58px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1.1;
+}
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.t-mono-xs {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* Italic serif — reserved for display echoes, never body or nav */
+.t-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.text-muted {
+  color: var(--color-steel);
+}
+.text-faint {
+  color: var(--color-ash);
+}
+.text-ember {
+  color: var(--color-ember);
+}
+
+/* ---------------- Layout shell ---------------- */
+
+.shell {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 64px);
+}
+
+/* ---------------- Interactive ---------------- */
+
+@layer components {
+  /* Ghost pill — the system's only button shape (pill, hairline) */
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--color-hairline-2);
+    border-radius: 999px;
+    padding: 13px 26px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-bone);
+    background: transparent;
+    white-space: nowrap;
+    transition:
+      border-color 0.45s var(--ease-focus),
+      background 0.45s var(--ease-focus),
+      color 0.45s var(--ease-focus),
+      transform 0.45s var(--ease-focus);
+  }
+  .btn-pill:hover {
+    border-color: var(--color-ember);
+    color: var(--color-ember);
+  }
+  .btn-pill:active {
+    transform: translateY(1px);
+  }
+
+  /* Solid variant — bone fill, the single high-emphasis control */
+  .btn-pill-solid {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--color-bone);
+    border-radius: 999px;
+    padding: 13px 26px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-void);
+    background: var(--color-bone);
+    white-space: nowrap;
+    transition:
+      background 0.45s var(--ease-focus),
+      color 0.45s var(--ease-focus),
+      transform 0.45s var(--ease-focus);
+  }
+  .btn-pill-solid:hover {
+    background: transparent;
+    color: var(--color-bone);
+  }
+  .btn-pill-solid:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Quiet text link with sliding underline */
+.link-quiet {
+  position: relative;
+  transition: color 0.45s var(--ease-focus);
+}
+.link-quiet::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-focus);
+}
+.link-quiet:hover::after {
+  transform: scaleX(1);
+}
+
+/* Arrow link — ember on hover (the accent's one interactive home) */
+.link-arrow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  transition: color 0.45s var(--ease-focus);
+}
+.link-arrow:hover {
+  color: var(--color-ember);
+}
+.link-arrow .arr {
+  transition: transform 0.45s var(--ease-focus);
+  display: inline-block;
+}
+.link-arrow:hover .arr {
+  transform: translateX(5px);
+}
+
+/* ---------------- Surfaces ---------------- */
+
+.card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-hairline);
+  border-radius: 12px;
+}
+
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--color-hairline);
+}
+
+/* Ember hairline — the accent as a stroke, never a fill */
+.ember-rule {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-ember) 0%,
+    rgba(204, 100, 55, 0.25) 45%,
+    transparent 100%
+  );
+}
+
+/* Paper flip — the one light band on the page (Biosciences mixed mode) */
+.paper {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.paper .text-muted {
+  color: #6d675c;
+}
+.paper .text-faint {
+  color: #8a8478;
+}
+.paper .hairline {
+  background: var(--color-paper-line);
+}
+.paper * {
+  border-color: var(--color-paper-line);
+}
+
+/* Faint oversized index numbers behind cards (dope.security) */
+.ghost-num {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(72px, 9vw, 128px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-hairline-2);
+  user-select: none;
+  pointer-events: none;
+}
+.paper .ghost-num {
+  -webkit-text-stroke: 1px var(--color-paper-line);
+}
+
+/* Live dot — semantic status only (deployed dashboards) */
+.dot-live {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-amber);
+  box-shadow: 0 0 8px rgba(232, 161, 60, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
