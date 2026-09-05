@@ -425,7 +425,7 @@ export default function Home() {
                   <div className="border-t pt-8">
                     <p className="t-mono-xs text-faint">Technical</p>
                     <p className="t-body-lg mt-3">
-                      Python (pandas) · SQL · Microsoft Excel · PowerPoint ·
+                      Microsoft Excel · PowerPoint ·
                       Tracxn · Google Workspace · Canva · Adobe Premiere Pro ·
                       Adobe Photoshop
                     </p>
