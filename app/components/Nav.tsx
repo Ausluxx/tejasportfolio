@@ -1,8 +1,8 @@
 const LINKS = [
-  { label: "About", href: "/tejasportfolio/#about" },
-  { label: "Experience", href: "/tejasportfolio/#experience" },
-  { label: "Projects", href: "/tejasportfolio/projects" },
-  { label: "Skills", href: "/tejasportfolio/#skills" },
+  { label: "About", href: "/#about" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/projects" },
+  { label: "Skills", href: "/#skills" },
 ];
 
 export default function Nav() {
@@ -21,7 +21,7 @@ export default function Nav() {
           {LINKS.map((l) => (
             <a
               key={l.label}
-              href={l.href}
+              href={`/tejasportfolio${l.href}`}
               className="t-mono-xs link-quiet text-muted hover:text-[color:var(--color-bone)]"
             >
               {l.label}
