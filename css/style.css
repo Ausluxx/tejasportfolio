@@ -185,7 +185,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ============================ HERO ============================ */
 
-.hero { position: relative; container-type: inline-size; display: flex; flex-direction: column; justify-content: center; padding-top: clamp(96px, 11vh, 132px); padding-bottom: 0; }
+.hero { position: relative; container-type: inline-size; display: flex; flex-direction: column; justify-content: center; padding-top: clamp(76px, 8.5vh, 104px); padding-bottom: 0; }
 .hero-meta { position: relative; z-index: 5; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(14px, 2vw, 26px); }
 .live { display: inline-flex; align-items: center; gap: 9px; }
 .live .dot { width: 7px; height: 7px; border-radius: 99px; background: var(--accent); position: relative; }
@@ -193,41 +193,38 @@ a { color: inherit; text-decoration: none; }
 @keyframes ping { 0% { transform: scale(.6); opacity: .7 } 70% { transform: scale(1.5); opacity: 0 } 100% { opacity: 0 } }
 
 /* ---- name / portrait interlock ----------------------------------------
-   Stage height IS the portrait height, so he fills the whole band instead of
-   floating with dead space under him. The copy and links flank him in the
-   outer columns; the centre column is reserved at his exact width.
-   The name is drawn twice: filled BEHIND him, outline-only IN FRONT, the
-   front copy masked to his own alpha so the stroke only lands on him.     */
+   Two stacked lines, each sized to fill the column — so they carry DIFFERENT
+   sizes (TEJAS has 5 glyphs, GARG has 4). Portrait stands on the ticker in
+   front of the filled type; a white outline copy sits on top, masked to his
+   own alpha so the stroke only ever lands on him.                          */
 .hero-stage {
   position: relative;
-  --ph: min(58cqi, 78vh);                   /* portrait height: tracks the column, not the zoomed viewport */
-  --pw: calc(var(--ph) * 0.6207);           /* its aspect ratio */
-  --nmY: calc(var(--ph) * 0.50);            /* name across his torso: below the face, above the copy */
+  margin-top: clamp(-260px, -21vh, -80px);
+  --ph: min(62cqi, 80vh);                   /* portrait height, column-driven */
+  --pw: calc(var(--ph) * 0.6207);
+  --nmY: 0px;                               /* type sits on the strip too */
   min-height: var(--ph);
 }
 
-.nm {
-  font-family: var(--display); font-weight: 400;
-  text-transform: uppercase; white-space: nowrap;
-  font-size: clamp(40px, 14.2vw, 232px);
-  line-height: .9; letter-spacing: -.035em;
-}
-@supports (font-size: 1cqi) { .nm { font-size: 16.4cqi; } }
+.nm { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: -.04em; }
+.nm .l1, .nm .l2 { display: block; white-space: nowrap; line-height: .82; }
+.nm .l1 { font-size: 22cqi; text-align: left; }
+.nm .l2 { font-size: 27cqi; text-align: right; }  /* staggered: fills the right side */
 
 .nm-fill { position: absolute; left: 0; right: 0; bottom: var(--nmY); z-index: 1; color: var(--ink); }
 
 .hero-stage::before {
   content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: calc(var(--pw) * 2.1); height: calc(var(--ph) * .92); z-index: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 72%, rgba(22,19,15,.075), rgba(22,19,15,0) 66%);
+  width: calc(var(--pw) * 2.1); height: calc(var(--ph) * .9); z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 74%, rgba(22,19,15,.08), rgba(22,19,15,0) 66%);
 }
 .hero-photo { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; z-index: 2; }
 .hero-photo img { height: var(--ph); width: auto; display: block; }
 
 .nm-out {
   position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  display: flex; align-items: flex-end; padding-bottom: var(--nmY);
-  color: transparent; -webkit-text-stroke: 2px var(--accent-l);
+  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: var(--nmY);
+  color: transparent; -webkit-text-stroke: 2px #fffdf7;
   -webkit-mask-image: url("../assets/img/hero.png"); mask-image: url("../assets/img/hero.png");
   -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-position: center bottom; mask-position: center bottom;
@@ -235,20 +232,22 @@ a { color: inherit; text-decoration: none; }
 }
 @supports not ((-webkit-text-stroke: 1px black)) { .nm-out { display: none; } }
 
-.hero-row {
-  position: absolute; left: 0; right: 0; bottom: clamp(26px, 4.4vh, 62px); z-index: 4;
-  display: grid; grid-template-columns: minmax(0,1fr) var(--pw) minmax(0,1fr);
-  align-items: end; gap: clamp(14px, 2.4vw, 40px);
+/* copy + links move ABOVE the figure, filling what used to be dead space */
+.hero-top {
+  position: relative; z-index: 5;
+  display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr);
+  gap: clamp(18px, 3vw, 52px); align-items: start;
+  margin-bottom: clamp(18px, 2.4vw, 34px);
 }
 
-.hero-left { align-self: end; padding-bottom: clamp(4px, 1vw, 16px); }
+.hero-left { align-self: start; }
 .hero-role { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .16em; color: var(--accent); }
-.hero-line { font-family: var(--editorial); font-size: clamp(19px, 2.1vw, 28px); line-height: 1.24; margin-top: 14px; max-width: 16ch; text-wrap: balance; }
-.hero-sub { color: var(--body-1); font-size: 15px; line-height: 1.55; margin-top: 14px; max-width: 34ch; text-wrap: pretty; }
-.hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(16px, 2vw, 24px); }
+.hero-line { font-family: var(--editorial); font-size: clamp(20px, 2.3vw, 31px); line-height: 1.22; margin-top: 12px; max-width: 20ch; text-wrap: balance; }
+.hero-sub { color: var(--body-1); font-size: 15px; line-height: 1.55; margin-top: 12px; max-width: 46ch; text-wrap: pretty; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(14px, 1.8vw, 20px); }
 .hero-ctas .btn { padding: 13px 22px; font-size: 11.5px; }
 
-.hero-right { align-self: end; justify-self: end; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; padding-bottom: clamp(4px, 1vw, 16px); }
+.hero-right { align-self: start; justify-self: end; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
 .hero-right a {
   font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em;
   border: 1px solid var(--line-2); padding: 9px 15px; display: inline-flex; align-items: center; gap: 9px;
@@ -516,10 +515,12 @@ body.ready .hero-photo { opacity: 1; clip-path: inset(0 0 0 0); transition: opac
   .hero-stage { min-height: 0; --ph: auto; display: flex; flex-direction: column; align-items: center; }
   .nm-out { display: none; }
   .nm-fill { position: static; }
-  .nm { white-space: normal; font-size: clamp(44px, 15vw, 100px) !important; line-height: .96; align-self: stretch; }
+  .nm .l1, .nm .l2 { font-size: clamp(46px, 16vw, 104px) !important; line-height: .92; }
   .hero-photo { position: static; transform: none; margin-top: 14px; }
   .hero-photo img { height: auto; width: min(58vw, 260px); }
-  .hero-row { position: static; grid-template-columns: 1fr; margin-top: 22px; gap: 22px; width: 100%; }
+  .hero-top { grid-template-columns: 1fr; gap: 18px; }
+  .hero-stage { margin-top: 0; }
+  .hero-right { justify-self: start; justify-content: flex-start; }
   .hero-row { grid-template-columns: 1fr; margin-top: 20px; gap: 22px; }
   .hero-right { justify-self: start; justify-content: flex-start; }
   .hero-left { padding-bottom: 0; }
