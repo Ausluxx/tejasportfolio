@@ -3,10 +3,9 @@
   "configurations": [
     {
       "name": "portfolio",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "cwd": "C:/Users/TEJAS/Desktop/Cluade/Portfolio Website",
-      "port": 3000
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "3100", "--bind", "127.0.0.1"],
+      "port": 3100
     }
   ]
 }

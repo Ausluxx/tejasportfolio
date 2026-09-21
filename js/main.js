@@ -1,132 +1,161 @@
-// Tejas Garg portfolio — dependency-free interaction layer.
-// Everything degrades to a fully readable static page without JS or with reduced motion.
+/* Tejas Garg — interaction layer.
+   Dependency-free. Degrades to a fully readable static page without JS
+   and collapses to static under prefers-reduced-motion. */
 (function () {
   "use strict";
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var supportsIO = "IntersectionObserver" in window;
+  var hasIO = "IntersectionObserver" in window;
 
-  /* ---------- Hero load-in ---------- */
-  function markLoaded() { document.body.classList.add("loaded"); }
+  /* ---------- page ready (hero load-in) ---------- */
+  var done = false;
+  function ready() { if (done) return; done = true; document.body.classList.add("ready"); }
   if (document.fonts && document.fonts.ready) {
-    // wait for webfonts so the display type doesn't animate then reflow
-    var settled = false;
-    document.fonts.ready.then(function () { if (!settled) { settled = true; markLoaded(); } });
-    setTimeout(function () { if (!settled) { settled = true; markLoaded(); } }, 900);
+    document.fonts.ready.then(ready);
+    setTimeout(ready, 1000); // never wait on a stalled font
   } else {
-    requestAnimationFrame(markLoaded);
+    requestAnimationFrame(ready);
   }
 
-  /* ---------- Nav ---------- */
+  /* ---------- nav ---------- */
   var nav = document.getElementById("nav");
-  var toggle = document.getElementById("navToggle");
+  var burger = document.getElementById("burger");
   var links = document.getElementById("navLinks");
 
-  if (toggle && nav) {
-    toggle.addEventListener("click", function () {
+  if (burger && nav) {
+    burger.addEventListener("click", function () {
       var open = nav.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
   if (links && nav) {
     links.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
         nav.classList.remove("open");
-        if (toggle) toggle.setAttribute("aria-expanded", "false");
+        if (burger) burger.setAttribute("aria-expanded", "false");
       });
     });
   }
   if (nav) {
-    var navTick = false;
-    var onScrollNav = function () {
-      if (navTick) return;
-      navTick = true;
+    var nTick = false;
+    var onScroll = function () {
+      if (nTick) return;
+      nTick = true;
       requestAnimationFrame(function () {
-        nav.classList.toggle("scrolled", window.scrollY > 12);
-        navTick = false;
+        nav.classList.toggle("solid", window.scrollY > 40);
+        nTick = false;
       });
     };
-    window.addEventListener("scroll", onScrollNav, { passive: true });
-    onScrollNav();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
 
-  /* ---------- Scroll reveals ---------- */
-  var revealSel = ".reveal, .reveal-img, .stagger";
-  var revealEls = document.querySelectorAll(revealSel);
-
-  if (reduce || !supportsIO) {
+  /* ---------- reveals ---------- */
+  var revealEls = document.querySelectorAll(".rv, .rvi, .stag");
+  if (reduce || !hasIO) {
     revealEls.forEach(function (el) { el.classList.add("in"); });
   } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add("in");
         io.unobserve(e.target);
       });
-      // trigger just before the element enters, so clipped images are never
-      // caught as empty boxes on a fast scroll
     }, { threshold: 0.06, rootMargin: "0px 0px 4% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- Stat count-up ---------- */
-  var counters = document.querySelectorAll("[data-count]");
-  function runCount(el) {
-    var target = parseFloat(el.getAttribute("data-count"));
-    var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
-    var prefix = el.getAttribute("data-prefix") || "";
-    var duration = 1300;
-    var start = null;
-    function frame(ts) {
-      if (start === null) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      // easeOutExpo
-      var eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-      el.textContent = prefix + (target * eased).toFixed(decimals);
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = prefix + target.toFixed(decimals);
-    }
-    requestAnimationFrame(frame);
+  /* ---------- number count-up ---------- */
+  var nums = document.querySelectorAll("[data-count]");
+  function settle(el) {
+    var d = parseInt(el.getAttribute("data-dec") || "0", 10);
+    el.textContent = (el.getAttribute("data-prefix") || "") + parseFloat(el.getAttribute("data-count")).toFixed(d);
   }
-  if (counters.length) {
-    if (reduce || !supportsIO) {
-      counters.forEach(function (el) {
-        var d = parseInt(el.getAttribute("data-decimals") || "0", 10);
-        el.textContent = (el.getAttribute("data-prefix") || "") + parseFloat(el.getAttribute("data-count")).toFixed(d);
-      });
+  function count(el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    var dec = parseInt(el.getAttribute("data-dec") || "0", 10);
+    var pre = el.getAttribute("data-prefix") || "";
+    var dur = 1400, t0 = null;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      el.textContent = pre + (target * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(step); else settle(el);
+    }
+    requestAnimationFrame(step);
+  }
+  if (nums.length) {
+    if (reduce || !hasIO) {
+      nums.forEach(settle);
     } else {
-      var cio = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
+      var nio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
           if (!e.isIntersecting) return;
-          runCount(e.target);
-          cio.unobserve(e.target);
+          count(e.target);
+          nio.unobserve(e.target);
         });
       }, { threshold: 0.6 });
-      counters.forEach(function (el) { cio.observe(el); });
+      nums.forEach(function (el) { nio.observe(el); });
     }
   }
 
-  /* ---------- Parallax on full-bleed breaks ---------- */
-  var parts = document.querySelectorAll("[data-parallax]");
-  if (!reduce && parts.length) {
+  /* ---------- parallax on full-bleed photo breaks ---------- */
+  var par = document.querySelectorAll("[data-parallax]");
+  if (!reduce && par.length) {
     var pTick = false;
-    var applyParallax = function () {
-      parts.forEach(function (img) {
-        var host = img.parentElement;
-        var r = host.getBoundingClientRect();
-        if (r.bottom < -100 || r.top > window.innerHeight + 100) return;
-        var progress = (window.innerHeight - r.top) / (window.innerHeight + r.height); // 0..1
-        var shift = (progress - 0.5) * 56;
-        img.style.transform = "translate3d(0," + shift.toFixed(1) + "px,0) scale(1.14)";
+    var draw = function () {
+      par.forEach(function (img) {
+        var r = img.parentElement.getBoundingClientRect();
+        if (r.bottom < -120 || r.top > window.innerHeight + 120) return;
+        var p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        img.style.transform = "translate3d(0," + ((p - 0.5) * 62).toFixed(1) + "px,0) scale(1.16)";
       });
       pTick = false;
     };
     window.addEventListener("scroll", function () {
-      if (pTick) return;
-      pTick = true;
-      requestAnimationFrame(applyParallax);
+      if (pTick) return; pTick = true; requestAnimationFrame(draw);
     }, { passive: true });
-    window.addEventListener("resize", applyParallax, { passive: true });
-    applyParallax();
+    window.addEventListener("resize", draw, { passive: true });
+    draw();
+  }
+
+  /* ---------- section index rail ---------- */
+  var rail = document.getElementById("rail");
+  if (rail && hasIO) {
+    var railLinks = [].slice.call(rail.querySelectorAll("a"));
+    var ids = railLinks.map(function (a) { return a.getAttribute("href").slice(1); });
+    var targets = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    var sio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        railLinks.forEach(function (a) {
+          a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id);
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    targets.forEach(function (t) { sio.observe(t); });
+  }
+
+  /* ---------- cursor badge on project cards (pointer devices only) ---------- */
+  var badge = document.getElementById("cursor");
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (badge && fine && !reduce) {
+    var cards = document.querySelectorAll("[data-cursor]");
+    var x = 0, y = 0, cTick = false;
+    var move = function (e) {
+      x = e.clientX; y = e.clientY;
+      if (cTick) return;
+      cTick = true;
+      requestAnimationFrame(function () {
+        badge.style.transform = "translate(" + x + "px," + y + "px) translate(-50%,-50%)" + (badge.classList.contains("on") ? " scale(1)" : " scale(.7)");
+        cTick = false;
+      });
+    };
+    cards.forEach(function (c) {
+      c.addEventListener("mouseenter", function () { badge.classList.add("on"); });
+      c.addEventListener("mouseleave", function () { badge.classList.remove("on"); });
+      c.addEventListener("mousemove", move);
+    });
   }
 })();
