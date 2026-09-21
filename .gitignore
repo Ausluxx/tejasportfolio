@@ -1,8 +1,21 @@
 /node_modules
-/.next
-/out
 .DS_Store
-*.tsbuildinfo
-next-env.d.ts
+.vercel/
 
-.vercel
+# planning docs & heavy source originals (optimized copies live in assets/)
+New things/
+CONTEXT.md
+COPY.md
+DESIGN.md
+DESIGN(1).md
+DESIGN(2).md
+DESIGN(3).md
+DESIGN(4).md
+DESIGN(5).md
+DESIGN(6).md
+DESIGN(7).md
+FAMA 3 FACTOR.png
+Momentum Project 2.png
+Momentumm Project.png
+SpaceX - DCF Model - Cover.pdf
+Resume - Tejas Garg.pdf

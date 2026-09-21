@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Tejas Garg | Markets, Valuation &amp; Research</title>
+  <meta name="description" content="Market research, valuation and quantitative finance projects by Tejas Garg — factor backtests on Indian equities, a Fama-French engine, a SpaceX DCF, a cross-sector research terminal, and more." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a href="index.html" class="brand">Tejas Garg<span class="dot">.</span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#about">About</a>
+        <a href="index.html#work">Work</a>
+        <a href="projects.html">Projects</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="assets/resume/Tejas-Garg-Resume.pdf" class="nav-cta" download>Résumé</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="proj-hero">
+      <p class="eyebrow reveal"><span class="tick">◆</span>Markets · Valuation · Research</p>
+      <h1 class="reveal">Projects</h1>
+      <p class="lead reveal">Things I've built, researched, modelled — and occasionally overthought.</p>
+    </section>
+
+    <div style="height:clamp(50px,7vw,100px)"></div>
+
+    <!-- 01 NSE -->
+    <article class="proj reveal" id="nse">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">01 / 09</div>
+          <h2 class="proj-title">NSE Momentum<br />+ Quality</h2>
+          <div class="proj-cat">Markets / Factor Investing · Python</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://nse-momentum-quality-prj2-nse50.streamlit.app/" target="_blank" rel="noopener">Live dashboard <span class="arr">→</span></a>
+            <a class="arrow-link" href="https://github.com/Ausluxx/nse-momentum-quality" target="_blank" rel="noopener">GitHub <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">Do momentum and quality still earn their keep on Indian large-caps once you account for real trading costs?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>A long-only strategy that ranks NSE stocks on combined momentum and quality signals — weighting the two by their information coefficient rather than guessing — builds the portfolio with a quadratic-programming optimizer under real constraints, and tests it walk-forward with transaction costs, all in an interactive dashboard.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>Factor investing, signal combination, portfolio construction under constraints, and why out-of-sample testing and costs are what separate a real edge from a curve-fit.</p></div>
+        </div>
+      </div>
+      <div class="proj-shot proj-shots-2">
+        <img src="assets/projects/nse-1.png" alt="NSE Momentum + Quality dashboard" loading="lazy" />
+        <img src="assets/projects/nse-2.png" alt="NSE strategy performance view" loading="lazy" />
+      </div>
+    </article>
+
+    <!-- 02 Fama -->
+    <article class="proj reveal" id="fama">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">02 / 09</div>
+          <h2 class="proj-title">Fama-French<br />Factor Engine</h2>
+          <div class="proj-cat">Quantitative Finance · Python</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://factor-analytics-terminal-nse50.streamlit.app/" target="_blank" rel="noopener">Live dashboard <span class="arr">→</span></a>
+            <a class="arrow-link" href="https://github.com/Ausluxx/factor-analytics-terminal" target="_blank" rel="noopener">GitHub <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">What actually drives returns beyond the market — and how do you report it without overstating the case?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>Constructed Fama-French SMB and HML factors from size/value corner portfolios, ran factor regressions with Newey-West (HAC) standard errors, and layered EWMA volatility, rolling-beta tracking and a bias-diagnostics module — survivorship, look-ahead, sample attrition — into a cached Streamlit dashboard.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>What drives cross-sectional returns, why a single market beta isn't enough, and the statistical discipline that keeps factor results honest.</p></div>
+        </div>
+      </div>
+      <div class="proj-shot"><img src="assets/projects/fama.png" alt="Fama-French factor analytics dashboard" loading="lazy" /></div>
+    </article>
+
+    <!-- 03 SpaceX -->
+    <article class="proj reveal" id="spacex">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">03 / 09</div>
+          <h2 class="proj-title">SpaceX<br />DCF Model</h2>
+          <div class="proj-cat">Valuation / Financial Modelling · Excel</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://github.com/Ausluxx/SpaceX-DCF-Model" target="_blank" rel="noopener">GitHub <span class="arr">→</span></a>
+            <a class="arrow-link" href="assets/projects/SpaceX-DCF-Cover.pdf" target="_blank" rel="noopener">Cover / summary <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">What is one of the world's most-watched private companies actually worth — from first principles?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>A full three-statement model feeding a discounted-cash-flow valuation, with scenario analysis, sensitivity tables, and terminal value cross-checked two ways — Gordon Growth and an exit multiple.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>DCF mechanics, the tyranny of terminal-value assumptions, and why a valuation is only as honest as its sensitivity table.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 Cross-Sector Tracker -->
+    <article class="proj reveal" id="tracker">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">04 / 09</div>
+          <h2 class="proj-title">Cross-Sector<br />Research Terminal</h2>
+          <div class="proj-cat">Equity Research · AI-assisted · Python</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://lnkd.in/p/geyTbaSv" target="_blank" rel="noopener">Overview <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">What if research followed what's actually moving in the market, instead of waiting to be asked?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>An automated weekly market tracker and newsletter monitoring cross-sector news with a source-tier check that flags discrepancies rather than picking a number — extended into a research terminal that pulls company, peer, insider-transaction and news data via the FMP API into standardised nine-section research notes across semiconductors, medical devices and specialty retail.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>What makes a company worth researching right now, how to structure fundamental data into something actionable, and why a source-tier check matters more than a confident-sounding number.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 Matiks -->
+    <article class="proj reveal" id="matiks">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">05 / 09</div>
+          <h2 class="proj-title">Matiks<br />Retention Case</h2>
+          <div class="proj-cat">Product / Research Case</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://lnkd.in/p/g7uMvx6B" target="_blank" rel="noopener">Read the case <span class="arr">→</span></a>
+          </div>
+          <div class="proj-status">Top 3.3% of 9,172 entrants</div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">Which feature next — or is that the wrong question entirely?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>Built the case hypothesis on a hand-assembled dataset of 947 scraped app-store reviews and 130 community messages, structured into a diagnosis of user drop-off, and reframed the brief from "which feature next" to "nothing a match produces compounds." Delivered a 24-slide deck with user journey, competitor analysis and a 50-player k-factor gate.</p></div>
+          <div class="proj-sec"><div class="k">Why it mattered</div><p>Placed in the top 3.3% of 9,172 registrants — a reminder that the sharpest move is often reframing the question, not answering the one you're handed.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 06 RemitRight -->
+    <article class="proj reveal" id="remitright">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">06 / 09</div>
+          <h2 class="proj-title">RemitRight</h2>
+          <div class="proj-cat">Fintech · Course: FinTech, SNU</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://www.linkedin.com/posts/tejas-garg-806b4a22b_fintech-economics-remittance-ugcPost-7455692689859178496-s90S/" target="_blank" rel="noopener">Write-up <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">People sending money abroad rarely know if they're getting a fair rate. Can a spread tell them?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>A USD/INR spread-intelligence tool that scores today's spread against a 30-day rolling baseline with z-score modelling on RBI DBIE data (GREEN / AMBER / RED), a structural risk calendar for predictable surges — month-end, FOMC, pre-Diwali — and an all-in cost comparator that includes the correspondent-bank charges most apps quietly leave out.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>Statistical baselines and mean reversion, how macro events move FX spreads, and why the true cost of a transfer is bigger than the headline rate.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 07 NourishRx -->
+    <article class="proj reveal" id="nourishrx">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">07 / 09</div>
+          <h2 class="proj-title">NourishRx</h2>
+          <div class="proj-cat">Startup Finance · Entrepreneurial Finance, SNU</div>
+          <div class="proj-links">
+            <a class="arrow-link" href="https://nizq11.github.io/NourishRx/" target="_blank" rel="noopener">Live site <span class="arr">→</span></a>
+            <a class="arrow-link" href="https://www.linkedin.com/posts/tejas-garg-806b4a22b_nourishrx-fac311-capstone-ugcPost-7455719959684616192-9Bz0/" target="_blank" rel="noopener">Write-up <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">Can you build and defend a startup end to end — the way a founder would in front of investors?</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>A simulated healthtech startup: structured an INR 16L SAFE Note seed raise at an INR 1.5 Cr valuation cap, built a 3-year model projecting an 11.9x LTV/CAC ratio, 49.8% gross margin and Year-2 break-even, then pitched it to faculty investors with a 12-slide deck.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>Unit economics, SAFE-note and valuation-cap mechanics, and building a model an investor will actually stress-test.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 08 AI Expense Tracker -->
+    <article class="proj reveal" id="ai-finance">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">08 / 09</div>
+          <h2 class="proj-title">AI Expense<br />Assistant</h2>
+          <div class="proj-cat">Fintech · PWA</div>
+          <div class="proj-status">In development</div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">Expense tracking fails because logging is a chore. What if you could just say "180 Uber"?</p>
+          <div class="proj-sec"><div class="k">What I'm building</div><p>An installable phone app that turns plain-language entries into structured transactions, built local-first for privacy and frictionless capture.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>How personal-finance data should be categorised — and why removing friction is the whole game in expense tracking.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 09 Quant Explainer -->
+    <article class="proj reveal" id="explainer">
+      <div class="proj-grid">
+        <div class="proj-left">
+          <div class="proj-num">09 / 09</div>
+          <h2 class="proj-title">Quant Concepts<br />Explainer</h2>
+          <div class="proj-cat">Education · HTML</div>
+          <div class="proj-status">Available on request</div>
+        </div>
+        <div class="proj-right">
+          <p class="proj-q">Factor models, CAPM, the rest — explained the way I wish they'd been explained to me.</p>
+          <div class="proj-sec"><div class="k">What I built</div><p>A glossary-first, beginner-friendly walk-through of the core quant-investing ideas, written so nothing assumes prior jargon.</p></div>
+          <div class="proj-sec"><div class="k">The finance behind it</div><p>If you can explain factor models and CAPM simply, you actually understand them.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- CTA -->
+    <section class="proj reveal" style="border-bottom:1px solid var(--ink)">
+      <h2 class="h-sub">Like what you see?</h2>
+      <div class="hero-ctas" style="margin-top:24px">
+        <a href="https://www.linkedin.com/in/tejas-garg-806b4a22b" target="_blank" rel="noopener" class="btn btn-solid">Connect on LinkedIn <span class="arr">→</span></a>
+        <a href="assets/resume/Tejas-Garg-Resume.pdf" class="btn btn-ghost" download>Download Résumé</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <span class="brand">Tejas Garg<span class="dot">.</span></span>
+      <span class="c">© 2026 · Delhi NCR, India · <span class="accent">28.61°N 77.21°E</span></span>
+      <span class="c"><a href="index.html" class="ulink">Back to home</a></span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
