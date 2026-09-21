@@ -158,4 +158,52 @@
       c.addEventListener("mousemove", move);
     });
   }
+
+  /* ---------- scrollytelling: the conclave photo opens as you scroll ---------- */
+  var stories = document.querySelectorAll("[data-story]");
+  if (stories.length) {
+    if (reduce) {
+      stories.forEach(function (st) {
+        var f = st.querySelector(".story-frame");
+        if (f) { f.style.setProperty("--w", "100%"); f.style.setProperty("--s", "1"); }
+      });
+    } else {
+      var sTick = false;
+      var drawStory = function () {
+        stories.forEach(function (st) {
+          var frame = st.querySelector(".story-frame");
+          var pct = st.querySelector("[data-story-pct]");
+          if (!frame) return;
+          var r = st.getBoundingClientRect();
+          var vh = window.innerHeight;
+          if (r.bottom < -200 || r.top > vh + 200) return;
+          // 0 when the band's top hits the bottom of the viewport, 1 once it is centred
+          var raw = (vh - r.top) / (vh * 0.85 + r.height * 0.5);
+          var p = Math.max(0, Math.min(1, raw));
+          var eased = 1 - Math.pow(1 - p, 3);
+          frame.style.setProperty("--w", (46 + eased * 54).toFixed(2) + "%");
+          frame.style.setProperty("--s", (1.18 - eased * 0.18).toFixed(4));
+          if (pct) pct.textContent = String(Math.round(eased * 100)).padStart(2, "0");
+        });
+        sTick = false;
+      };
+      window.addEventListener("scroll", function () {
+        if (sTick) return; sTick = true; requestAnimationFrame(drawStory);
+      }, { passive: true });
+      window.addEventListener("resize", drawStory, { passive: true });
+      drawStory();
+    }
+  }
+
+  /* ---------- ghost watermarks ---------- */
+  var ghosts = document.querySelectorAll(".ghost-wrap");
+  if (ghosts.length) {
+    if (reduce || !hasIO) { ghosts.forEach(function (g) { g.classList.add("in"); }); }
+    else {
+      var gio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); gio.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      ghosts.forEach(function (g) { gio.observe(g); });
+    }
+  }
 })();
