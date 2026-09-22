@@ -120,23 +120,6 @@
     draw();
   }
 
-  /* ---------- section index rail ---------- */
-  var rail = document.getElementById("rail");
-  if (rail && hasIO) {
-    var railLinks = [].slice.call(rail.querySelectorAll("a"));
-    var ids = railLinks.map(function (a) { return a.getAttribute("href").slice(1); });
-    var targets = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
-    var sio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        railLinks.forEach(function (a) {
-          a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id);
-        });
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    targets.forEach(function (t) { sio.observe(t); });
-  }
-
   /* ---------- cursor badge on project cards (pointer devices only) ---------- */
   var badge = document.getElementById("cursor");
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -195,15 +178,4 @@
     }
   }
 
-  /* ---------- ghost watermarks ---------- */
-  var ghosts = document.querySelectorAll(".ghost-wrap");
-  if (ghosts.length) {
-    if (reduce || !hasIO) { ghosts.forEach(function (g) { g.classList.add("in"); }); }
-    else {
-      var gio = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); gio.unobserve(e.target); } });
-      }, { threshold: 0.1 });
-      ghosts.forEach(function (g) { gio.observe(g); });
-    }
-  }
 })();
