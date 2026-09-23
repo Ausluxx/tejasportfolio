@@ -336,7 +336,7 @@ a, button { caret-color: var(--accent); }
 /* ============================ CONTACT (dark) ============================ */
 
 .cta-big { font-family: var(--display); font-weight: 500; font-size: clamp(40px,6.2vw,86px); line-height: 1.0; letter-spacing: -.03em; margin-top: clamp(14px,1.8vw,22px); }
-.cta-links { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); border-top: 1px solid var(--line-2); max-width: 900px; margin-top: clamp(38px,4.5vw,60px); }
+.cta-links { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); column-gap: clamp(32px,5vw,80px); border-top: 1px solid var(--line-2); margin-top: clamp(38px,4.5vw,60px); }
 .cta-links a { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 24px 4px; border-bottom: 1px solid var(--line-2); font-family: var(--mono); font-size: 13px; letter-spacing: .05em; position: relative; transition: color .4s var(--ease); }
 .cta-links a > :first-child { transition: transform .45s var(--out); }
 .cta-links a:hover > :first-child { transform: translateX(12px); }
