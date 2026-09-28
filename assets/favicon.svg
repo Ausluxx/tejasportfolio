@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="10" fill="#f3efe6"/>
-  <rect x="0.5" y="0.5" width="63" height="63" rx="9.5" fill="none" stroke="#d8d0bf"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="600" fill="#1b1813">TG</text>
-  <circle cx="49" cy="17" r="3.4" fill="#8a2437"/>
+  <rect width="64" height="64" rx="14" fill="#10231c"/>
+  <g fill="none" stroke="#a8d5bd" stroke-width="1.8">
+    <circle cx="32" cy="32" r="24" stroke="#edf0ea" stroke-width="2.2"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2" transform="rotate(30 32 32)"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2" transform="rotate(60 32 32)"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2" transform="rotate(90 32 32)"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2" transform="rotate(120 32 32)"/>
+    <ellipse cx="32" cy="32" rx="20" ry="7.2" transform="rotate(150 32 32)"/>
+  </g>
 </svg>
