@@ -84,6 +84,7 @@
       <a href="#nourishrx">NourishRx <span>Startup finance</span></a>
       <a href="#research-assistant">AI Research Assistant <span>In development</span></a>
       <a href="#expense">AI Expense Tracker <span>In development</span></a>
+      <a href="#writing">Also written <span>Decks &amp; essays</span></a>
     </nav>
   </section>
 
@@ -166,17 +167,40 @@
         <p class="pr-kind">Valuation · Financial modelling · Excel</p>
         <div class="pr-links">
           <a class="link" href="https://github.com/Ausluxx/SpaceX-DCF-Model" target="_blank" rel="noopener">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
+          <a class="link" href="https://www.linkedin.com/feed/update/urn:li:activity:7479768620760256512/" target="_blank" rel="noopener">Write-up on LinkedIn <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
           <a class="link" href="assets/projects/SpaceX-DCF-Cover.pdf" target="_blank" rel="noopener">Model cover, PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">What is one of the most-watched private companies on earth actually worth, from first principles?</p>
+        <p class="pr-q">How much is SpaceX actually worth, built up from its own S-1/A filing?</p>
         <dl>
-          <div><dt>What I built</dt><dd>A full three-statement model feeding a discounted-cash-flow valuation, with scenario analysis and sensitivity tables.</dd></div>
-          <div><dt>The check</dt><dd>Terminal value cross-checked two ways, Gordon Growth against an exit multiple, because the terminal value usually carries most of a DCF.</dd></div>
-          <div><dt>What it taught me</dt><dd>DCF mechanics and the tyranny of terminal-value assumptions. A valuation is only as honest as its sensitivity table.</dd></div>
+          <div><dt>Source</dt><dd>SEC Form S-1/A, Amendment No. 2 (filed 3 June 2026). Valuation date 19 June 2026; SpaceX listed on Nasdaq on 12 June 2026 at $135 a share. Every hard-coded number is in blue font and traceable to the filing.</dd></div>
+          <div><dt>What I built</dt><dd>A full three-statement model with segment forecasts for Space, Starlink and AI, integrated operating schedules, Bear, Base and Bull scenarios toggled from one assumptions cell, and an interactive dashboard.</dd></div>
         </dl>
+        <dl class="results">
+          <div><dt>Gordon Growth</dt><dd><span class="fig">$10.77</span><span class="vs">Base · Bear $0.68 · Bull $32.63</span></dd></div>
+          <div><dt>Exit multiple</dt><dd><span class="fig">$30.46</span><span class="vs">Base · Bear $9.03 · Bull $63.15</span></dd></div>
+          <div><dt>Market price</dt><dd><span class="fig">$157.54</span><span class="vs">Nasdaq close, 1 July 2026</span></dd></div>
+        </dl>
+        <dl>
+          <div><dt>Result</dt><dd>Every scenario, on both methods, implies substantial downside to the market price. That doesn&rsquo;t mean the market is wrong; it shows how much of the valuation rests on expectations well beyond a five-year forecast.</dd></div>
+          <div><dt>What it taught me</dt><dd>Years of negative free cash flow from launch infrastructure, satellites and AI compute pushed most of the value into the terminal value. A DCF isn&rsquo;t a single correct price; it&rsquo;s a coherent story about growth, margins, capex, working capital, WACC and terminal value.</dd></div>
+        </dl>
+        <p class="fine">An educational valuation exercise, not investment advice.</p>
       </div>
+    </div>
+    <div class="pr-shots two rv">
+      <div class="shot shot-light"><img src="assets/projects/spacex-cover.webp" width="1374" height="909" loading="lazy" decoding="async" alt="Cover sheet of the SpaceX DCF model: ticker SPCX, valuation date 19 June 2026, share price $157.54, sourced from S-1/A Amendment No. 2, with a colour legend" /></div>
+      <figure class="bars in-shot">
+        <figcaption><b>Implied value per share against the market price.</b></figcaption>
+        <div class="bar"><span class="bar-label">Gordon · Bear</span><span class="bar-track"><span class="bar-fill" style="--w:0.43%"></span></span><span class="bar-val">$0.68</span></div>
+        <div class="bar"><span class="bar-label">Gordon · Base</span><span class="bar-track"><span class="bar-fill" style="--w:6.84%"></span></span><span class="bar-val">$10.77</span></div>
+        <div class="bar"><span class="bar-label">Gordon · Bull</span><span class="bar-track"><span class="bar-fill" style="--w:20.71%"></span></span><span class="bar-val">$32.63</span></div>
+        <div class="bar"><span class="bar-label">Exit · Bear</span><span class="bar-track"><span class="bar-fill" style="--w:5.73%"></span></span><span class="bar-val">$9.03</span></div>
+        <div class="bar"><span class="bar-label">Exit · Base</span><span class="bar-track"><span class="bar-fill" style="--w:19.33%"></span></span><span class="bar-val">$30.46</span></div>
+        <div class="bar pick"><span class="bar-label">Exit · Bull</span><span class="bar-track"><span class="bar-fill" style="--w:40.08%"></span></span><span class="bar-val">$63.15</span></div>
+        <div class="bar mkt"><span class="bar-label">Market price</span><span class="bar-track"><span class="bar-fill" style="--w:100%"></span></span><span class="bar-val">$157.54</span></div>
+      </figure>
     </div>
   </article>
 
@@ -184,18 +208,18 @@
   <article class="pr wrap" id="tracker" aria-labelledby="p-tracker">
     <div class="pr-grid rv">
       <div class="pr-side">
-        <h2 class="h2" id="p-tracker">Cross-Sector Research Terminal</h2>
+        <h2 class="h2" id="p-tracker">Morning Dashboard &amp; Research Terminal</h2>
         <p class="pr-kind">Equity research · AI-assisted · Python</p>
         <div class="pr-links">
           <a class="link" href="https://lnkd.in/p/geyTbaSv" target="_blank" rel="noopener">Overview on LinkedIn <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">What if research followed what was actually moving, instead of waiting to be asked?</p>
+        <p class="pr-q">What if research followed what had actually happened, instead of what the stock did?</p>
         <dl>
-          <div><dt>What I built</dt><dd>An automated weekly market tracker and newsletter that monitors news across sectors and draws week-over-week insights.</dd></div>
-          <div><dt>The check</dt><dd>A source-tier check that rejects unverified claims and flags discrepancies, rather than quietly picking a number.</dd></div>
-          <div><dt>Extended into</dt><dd>A research terminal pulling company, peer, insider-transaction and news data through the FMP market-data API into standardised nine-section research notes across semiconductors, medical devices and specialty retail.</dd></div>
+          <div><dt>The morning dashboard</dt><dd>Refreshes before I wake up: India startup and VC activity, India macro (RBI, SEBI, GST, bonds, the rupee), global macro (Fed, ECB, China, yields, oil), a market snapshot, an IPO tracker and the day&rsquo;s calendar. Then one concept explained properly, one deep dive, one interview question with the common mistake, and a pattern of the day that forces the stories into a single thesis.</dd></div>
+          <div><dt>The research terminal</dt><dd>Studies two to four companies every few days, each from a different industry and each picked because something happened: earnings, guidance, an acquisition, a regulatory decision. Nine sections per company, built on FMP market data, across semiconductors, medical devices, specialty retail and more.</dd></div>
+          <div><dt>The design rule</dt><dd>No buy or sell calls anywhere; the output is a set of questions I have to answer myself. A source-tier check rejects unverified claims and flags discrepancies, so the system admits what it doesn&rsquo;t know instead of confidently filling the gap.</dd></div>
           <div><dt>What it taught me</dt><dd>What makes a company worth researching right now, and how to turn scattered fundamentals into something you can act on.</dd></div>
         </dl>
       </div>
@@ -215,8 +239,8 @@
       <div class="pr-body">
         <p class="pr-q">Which feature next, or is that entirely the wrong question?</p>
         <dl>
-          <div><dt>Approach</dt><dd>Built the hypothesis on a hand-assembled dataset of 947 scraped app-store reviews and 130 community messages, structured into a diagnosis of where users drop off.</dd></div>
-          <div><dt>The reframe</dt><dd>From &ldquo;which feature next&rdquo; to &ldquo;nothing a match produces compounds.&rdquo;</dd></div>
+          <div><dt>Approach</dt><dd>A hand-assembled dataset of 947 app-store reviews, 130 community messages and eight search-volume exports, around one question: why doesn&rsquo;t playing Matiks spread Matiks?</dd></div>
+          <div><dt>The finding</dt><dd>A 4.6M-view campaign converted 3.16K subscribers, and almost nobody searches for what the product sells. It can&rsquo;t buy growth and can&rsquo;t rank for it, so it has to grow itself. The brief moved from &ldquo;which feature next&rdquo; to &ldquo;nothing a match produces compounds.&rdquo;</dd></div>
         </dl>
         <dl class="results">
           <div><dt>Placement</dt><dd><span class="fig">Top 3.3%</span><span class="vs">of 9,172 registrants</span></dd></div>
@@ -224,7 +248,8 @@
           <div><dt>Spend gate</dt><dd><span class="fig">50</span><span class="vs">player k-factor test</span></dd></div>
         </dl>
         <dl>
-          <div><dt>What it taught me</dt><dd>The sharpest move is often reframing the question rather than answering the one you were handed. The deck covered the user journey and competitors, and set a 50-player k-factor gate that had to clear before any spend.</dd></div>
+          <div><dt>My answer</dt><dd>Make every match mint two things: a Challenge Card a friend has to install to answer, and a Cognitive Portfolio that makes leaving expensive. Then a gate: if the card&rsquo;s k-factor doesn&rsquo;t move toward 1 in the first quarter, fix the card before spending anything on growth.</dd></div>
+          <div><dt>What it taught me</dt><dd>The sharpest move is usually reframing the question rather than answering the one you were handed. It made the case round; it didn&rsquo;t make the top 10, and I posted the deck anyway.</dd></div>
         </dl>
       </div>
     </div>
@@ -241,12 +266,12 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">People sending money home rarely know whether the rate is fair. Can a spread simply tell them?</p>
+        <p class="pr-q">Providers quietly take 0.3&ndash;0.8% above the mid-market rate on every remittance. Can a spread simply tell people when it&rsquo;s fair?</p>
         <dl>
           <div><dt>The signal</dt><dd>Scores today&rsquo;s USD/INR spread against a 30-day rolling baseline using z-scores on RBI DBIE data, and reports green, amber or red.</dd></div>
           <div><dt>The calendar</dt><dd>A structural risk calendar flagging the predictable surges: month-end, FOMC and pre-Diwali.</dd></div>
-          <div><dt>The true cost</dt><dd>An all-in cost comparator that includes the correspondent-bank charges most remittance apps leave out.</dd></div>
-          <div><dt>What it taught me</dt><dd>Statistical baselines and mean reversion, how macro events move FX spreads, and why a transfer always costs more than its headline rate.</dd></div>
+          <div><dt>The true cost</dt><dd>An all-in channel comparator that includes the correspondent-bank charges most apps leave out, plus alerts the moment the spread hits a target. On a $1,500 transfer the hidden spread is &#8377;600&ndash;1,200, every month.</dd></div>
+          <div><dt>What it taught me</dt><dd>Baselines, mean reversion and how macro events move FX spreads. And one question from our professor that reshaped the business: if remittance companies don&rsquo;t partner with you, you&rsquo;re an information portal, so what&rsquo;s the moat? Built with a team of six.</dd></div>
         </dl>
       </div>
     </div>
@@ -267,7 +292,7 @@
         <p class="pr-q">Can you build a startup end to end, and defend it the way a founder would in front of investors?</p>
         <dl>
           <div><dt>The venture</dt><dd>A simulated healthtech company for condition-specific meal prep, aimed at India&rsquo;s 103M+ people with diabetes and 20M+ with PCOD, and at the 78% who drop prescribed diet plans within two weeks.</dd></div>
-          <div><dt>The raise</dt><dd>A &#8377;16L SAFE note seed round at a &#8377;1.5 Cr valuation cap, backed by a three-year financial model.</dd></div>
+          <div><dt>The raise</dt><dd>A &#8377;16L SAFE note seed round at a &#8377;1.5 Cr valuation cap, with the valuation justified three different ways and a cap table before and after the round, backed by a three-year model of revenue, burn, runway, CAC and LTV.</dd></div>
         </dl>
         <dl class="results">
           <div><dt>LTV / CAC</dt><dd><span class="fig">11.9&times;</span></dd></div>
@@ -276,7 +301,7 @@
           <div><dt>Investor return</dt><dd><span class="fig">7.4&times;</span><span class="vs">conservative case</span></dd></div>
         </dl>
         <dl>
-          <div><dt>What it taught me</dt><dd>Unit economics, SAFE-note and valuation-cap mechanics, and building a model that survives someone trying to break it. Pitched to faculty investors with a 12-slide deck, a live 15-minute pitch and a 7-minute Q&amp;A.</dd></div>
+          <div><dt>What it taught me</dt><dd>Unit economics, SAFE-note and valuation-cap mechanics, and building a model that survives someone trying to break it. Pitched to faculty investors with a 12-slide deck, a live 15-minute pitch and a 7-minute VC-style Q&amp;A, as a team of seven.</dd></div>
         </dl>
         <p class="fine">Projections from the course model, not operating results.</p>
       </div>
@@ -318,6 +343,24 @@
       </div>
     </div>
   </article>
+
+  <!-- WRITING -->
+  <section class="pr wrap" id="writing" aria-labelledby="p-writing">
+    <div class="pr-grid rv">
+      <div class="pr-side">
+        <h2 class="h2" id="p-writing">Also written</h2>
+        <p class="pr-kind">Research and strategy pieces, on LinkedIn</p>
+      </div>
+      <div class="pr-body">
+        <ul class="index writing">
+          <li><a href="https://www.linkedin.com/feed/update/urn:li:activity:7482320432025464832/" target="_blank" rel="noopener"><span class="nm">The Structural Transformation of Venture Capital in 2026</span><span class="q">89% of US capital raised went to established firms; AI took 86% of deal value.</span><span class="k">18-page deck</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a></li>
+          <li><a href="https://www.linkedin.com/feed/update/urn:li:activity:7484959050288259072/" target="_blank" rel="noopener"><span class="nm">Customer Value Funds</span><span class="q">Financing customer acquisition instead of buying equity.</span><span class="k">Essay</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a></li>
+          <li><a href="https://www.linkedin.com/feed/update/urn:li:activity:7487718486924959744/" target="_blank" rel="noopener"><span class="nm">One8, Second Wave</span><span class="q">From a product brand to a connected ecosystem.</span><span class="k">24-page deck</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a></li>
+          <li><a href="https://www.linkedin.com/feed/update/urn:li:activity:7499073461575794688/" target="_blank" rel="noopener"><span class="nm">The third layer of governance</span><span class="q">Writing policy that future office-holders actually follow.</span><span class="k">Essay</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
   <!-- CLOSE -->
   <section class="night contact cta-band" aria-labelledby="close-h">
