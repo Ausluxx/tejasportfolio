@@ -306,8 +306,6 @@ table { border-collapse: collapse; width: 100%; }
 }
 .hero-sub { margin-top: var(--sp-5); font-size: var(--f-body); line-height: var(--lh-body); color: var(--ink-2); }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
-.hero-avail { margin-top: var(--sp-4); font-size: var(--f-small); color: var(--muted); display: flex; align-items: center; gap: 10px; }
-.hero-avail svg { width: 16px; height: 16px; color: var(--shift-a); flex: none; }
 
 /* footnote markers */
 .fn {
@@ -397,8 +395,6 @@ table { border-collapse: collapse; width: 100%; }
 .ledger tbody tr:hover .ok, .ledger tbody tr:focus-within .ok,
 .ledger tbody tr.lit .ok { opacity: 1; transform: none; }
 .ledger tbody tr:hover .c-src, .ledger tbody tr:focus-within .c-src { color: var(--ink); }
-.verify-note { margin-top: var(--sp-4); display: flex; align-items: center; gap: 8px; font-size: var(--f-meta); color: var(--muted); }
-.verify-note svg { width: 14px; height: 14px; color: var(--shift-b); }
 
 /* ============================== DEAL ROOM ============================== */
 
@@ -628,7 +624,12 @@ table { border-collapse: collapse; width: 100%; }
 .contact { padding-block: var(--sp-7) var(--sp-6); }
 .contact-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
 .seal { width: 100%; max-width: 380px; justify-self: end; aspect-ratio: 1; overflow: visible; }
-.seal path { fill: none; stroke-width: 0.7; vector-effect: non-scaling-stroke; }
+/* the closing mark: TG engraved, a heavy stroke with a hairline cut down its centre */
+.seal { fill: none; max-width: 300px; }
+.seal-a { stroke: var(--mint); stroke-width: 6.4; }
+.seal-b { stroke: var(--night); stroke-width: 3.6; }
+.seal-c { stroke: var(--mint); stroke-width: 0.9; }
+.seal path { stroke-dasharray: 1; stroke-dashoffset: 0; }
 .contact .h2 { max-width: 16ch; font-size: clamp(2.1rem, 1.3rem + 3.3vw, 4.4rem); }
 .contact .lead { margin-top: var(--sp-5); color: var(--on-night-2); }
 .mail {
@@ -807,6 +808,22 @@ table { border-collapse: collapse; width: 100%; }
   .js .signoff.rv { transform: none; }
 }
 
+/* the printed portrait: dithered ink canvas over the photograph while it develops */
+.cut-dither { position: absolute; left: -1.6%; top: 0.5%; width: 104%; aspect-ratio: 1040 / 1082; pointer-events: none; transition: opacity 650ms var(--ease); }
+/* 0.01, not 0: the photo still counts as painted (largest-paint metric) while the ink shows over it */
+.vignette.printing .cut img { animation: none; opacity: 0.01; }
+.vignette.printing.printed .cut img { opacity: 1; transition: opacity 650ms var(--ease); }
+.vignette.printed .cut-dither { opacity: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .seal.rv { opacity: 1; transform: none; }
+  .js .seal path { transition: stroke-dashoffset 1100ms var(--ease); }
+  .js .seal:not(.in) path { stroke-dashoffset: 1; }
+  .js .seal .seal-a path + path { transition-delay: 350ms; }
+  .js .seal .seal-b path, .js .seal .seal-c path { transition-delay: 700ms; }
+  .js .seal .seal-b path + path, .js .seal .seal-c path + path { transition-delay: 950ms; }
+}
+
 /* phones: shorter distances, no masks on large blocks of type, nothing that
    repaints a full-width image every frame */
 @media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
@@ -835,7 +852,7 @@ table { border-collapse: collapse; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero .rise, .cut img { animation: none; }
-  .bar-fill, .gantt-bar, .tg path, .tg-sign path { transition: none; animation: none; }
+  .bar-fill, .gantt-bar, .tg path, .tg-sign path, .seal path { transition: none; animation: none; }
   .js .bars:not(.in) .bar-fill, .js .gantt:not(.in) .gantt-bar { transform: none; }
 }
 
@@ -864,7 +881,7 @@ table { border-collapse: collapse; width: 100%; }
   .roles { grid-template-columns: minmax(0, 1fr); }
   .g-grid { --lab: 150px; }
   .contact-grid { grid-template-columns: minmax(0, 1fr); }
-  .seal { max-width: 180px; justify-self: start; margin-top: var(--sp-2); }
+  .seal { max-width: 150px; justify-self: start; margin-top: var(--sp-2); }
   .role, .role + .role { padding: var(--sp-6) 0; border-left: 0; }
   .role + .role { border-top: 1px solid var(--on-deep-rule); }
   .role:first-child { padding-top: 0; }

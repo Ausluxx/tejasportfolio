@@ -141,24 +141,6 @@
   }
 
   [].forEach.call(doc.querySelectorAll('[data-g="ring"]'), function (svg) { engrave(drawRing(svg), 0.1); });
-  /* a rosette: three bands of strands at different radii, the page's closing seal */
-  function drawRosette(svg) {
-    var c = 200, steps = 720, out = [];
-    var paint = strokeGradient(svg, "gr-seal", "#a8d5bd", "#c4b8ec", true);
-    [[168, 16, 30, 12], [118, 26, 15, 10], [64, 20, 9, 8]].forEach(function (b) {
-      for (var s = 0; s < b[3]; s++) {
-        var ph = (s / b[3]) * Math.PI * 2, d = "";
-        for (var i = 0; i <= steps; i++) {
-          var t = (i / steps) * Math.PI * 2;
-          var r = b[0] + b[1] * Math.sin(b[2] * t + ph) + b[1] * 0.35 * Math.sin(b[2] * 3 * t - ph);
-          d += (i ? "L" : "M") + (c + r * Math.cos(t)).toFixed(1) + " " + (c + r * Math.sin(t)).toFixed(1);
-        }
-        out.push(addPath(svg, d + "Z", paint, s % 2 ? "0.5" : "0.9"));
-      }
-    });
-    return out;
-  }
-
   function engraveOnView(svg, paths) {
     if (reduce || !hasIO) return;
     paths.forEach(function (p) { var l = p.getTotalLength(); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
@@ -181,7 +163,6 @@
     }, { rootMargin: "600px 0px" });
     o.observe(el);
   }
-  [].forEach.call(doc.querySelectorAll('[data-g="rosette"]'), function (svg) { whenNear(svg, function () { engraveOnView(svg, drawRosette(svg)); }); });
 
   /* the underprint: the band maths repeated down the ledger at hairline weight,
      faint enough that every figure and label keeps its contrast */
@@ -213,6 +194,92 @@
     }, { threshold: 0.2 });
     o.observe(svg);
   }); });
+
+
+  /* ---------- the portrait is printed ----------
+     Ordered (Bayer 8x8) dithering is how a press turns a photograph into
+     ink: dots where the image is dark, paper where it is light. On load the
+     portrait builds up as dithered ink, cell by cell, then the photograph
+     itself comes through. Once, about a second, never under reduced motion,
+     and the photo is simply there without JavaScript. */
+  function printPortrait() {
+    var fig = doc.querySelector(".vignette");
+    if (!fig || reduce || !window.HTMLCanvasElement) return;
+    var src = fig.querySelector(".cut-in img");
+    var cuts = fig.querySelectorAll(".cut");
+    if (!src || !cuts.length) return;
+
+    var canvases = [].map.call(cuts, function (cut) {
+      var cv = doc.createElement("canvas");
+      cv.className = "cut-dither"; cv.setAttribute("aria-hidden", "true");
+      cut.appendChild(cv);
+      return cv;
+    });
+    fig.classList.add("printing");
+
+    var finished = false;
+    function done() {
+      if (finished) return; finished = true;
+      fig.classList.add("printed");
+      setTimeout(function () {
+        canvases.forEach(function (c) { c.remove(); });
+        fig.classList.remove("printing", "printed");
+      }, 700);
+    }
+    setTimeout(done, 4000); /* never leave the portrait hidden */
+
+    var BAYER = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,
+                 3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+
+    function start() {
+      var box = canvases[0].getBoundingClientRect();
+      if (!box.width || !src.naturalWidth) { done(); return; }
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = Math.round(box.width * dpr), H = Math.round(box.height * dpr);
+      var cols = box.width < 360 ? 88 : 124;
+      var rows = Math.round(cols * src.naturalHeight / src.naturalWidth);
+      var off = doc.createElement("canvas"); off.width = cols; off.height = rows;
+      var octx = off.getContext("2d", { willReadFrequently: true });
+      octx.drawImage(src, 0, 0, cols, rows);
+      var px;
+      try { px = octx.getImageData(0, 0, cols, rows).data; } catch (e) { done(); return; }
+
+      var n = cols * rows, cells = [];
+      for (var i = 0; i < n; i++) {
+        if (px[i * 4 + 3] < 128) continue;
+        var r = (i / cols) | 0, c = i % cols;
+        var lum = (0.2126 * px[i * 4] + 0.7152 * px[i * 4 + 1] + 0.0722 * px[i * 4 + 2]) / 255;
+        if (lum * 1.1 >= (BAYER[(r % 8) * 8 + (c % 8)] + 0.5) / 64) continue; /* paper, not ink */
+        var h = Math.sin(i * 12.9898) * 43758.5453; h -= Math.floor(h);
+        cells.push(c, r, 0.62 * (r / rows) + 0.12 * (c / cols) + 0.18 * h);
+      }
+      canvases.forEach(function (cv) { cv.width = W; cv.height = H; });
+      var ctx = canvases[0].getContext("2d");
+      var cw = W / cols, ch = H / rows, dot = Math.max(1, Math.min(cw, ch) * 0.86);
+      var DUR = 1000, CELL = 0.12, SPAN = 0.92 + CELL, t0 = null;
+      ctx.fillStyle = "#10231c";
+
+      function frame(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / DUR, 1) * SPAN;
+        ctx.clearRect(0, 0, W, H);
+        for (var k = 0; k < cells.length; k += 3) {
+          var d = cells[k + 2];
+          if (p <= d) continue;
+          var g = Math.min(1, (p - d) / CELL), sz = dot * (0.35 + 0.65 * g);
+          ctx.fillRect(cells[k] * cw + (cw - sz) / 2, cells[k + 1] * ch + (ch - sz) / 2, sz, sz);
+        }
+        for (var m = 1; m < canvases.length; m++) {
+          var c2 = canvases[m].getContext("2d");
+          c2.clearRect(0, 0, W, H); c2.drawImage(canvases[0], 0, 0);
+        }
+        if (ts - t0 < DUR) requestAnimationFrame(frame); else setTimeout(done, 120);
+      }
+      requestAnimationFrame(frame);
+    }
+    (src.decode ? src.decode() : Promise.resolve()).then(start, done);
+  }
+  printPortrait();
 
   /* ---------- verification: footnote marks <-> notes ---------- */
   function linkNotes(sel) {
