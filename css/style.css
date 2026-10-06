@@ -16,6 +16,12 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+@font-face {
+  font-family: "Caveat"; font-style: normal; font-weight: 500; font-display: swap;
+  src: url("../assets/fonts/caveat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+2013-2014, U+2018-201D, U+2026;
+}
+
 :root {
   /* paper and ink */
   --paper: #edf0ea;
@@ -726,6 +732,129 @@ table { border-collapse: collapse; width: 100%; }
   .album figure:hover .plate { color: var(--shift-b); }
 }
 
+/* ============================== FIELD NOTES ============================== */
+/* the signature as a found object */
+.tg-stamp {
+  display: inline-flex; align-items: flex-end; gap: 14px;
+  padding: 6px 10px 6px 0; margin-left: -2px;
+  background: none; border: 0; border-radius: 8px; cursor: pointer;
+  font: inherit; color: inherit; text-align: left;
+}
+.tg-stamp .tgs-t, .tg-stamp .tgs-g { transition: transform var(--dur-normal) var(--ease-out); }
+.tg-stamp:hover .tgs-t, .tg-stamp:focus-visible .tgs-t { transform: translate(-1.6px, -1.2px); }
+.tg-stamp:hover .tgs-g, .tg-stamp:focus-visible .tgs-g { transform: translate(1.6px, 1.2px); }
+.tg-stamp[aria-expanded="true"] .tgs-t { transform: translate(-3.5px, -2.5px); }
+.tg-stamp[aria-expanded="true"] .tgs-g { transform: translate(3.5px, 2.5px); }
+.stamp-meta { display: grid; gap: 2px; padding-bottom: 6px; }
+.stamp-k { font-size: var(--f-small); font-weight: 600; color: var(--ink); }
+.stamp-n { font-size: var(--f-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
+.stamp-act { color: var(--shift-a); font-weight: 600; transition: color var(--dur-fast) var(--ease-out); }
+.tg-stamp:hover .stamp-act { color: var(--shift-b); }
+
+/* the folio: a card of a different stock, found inside the page */
+/* folded from the first paint, so nothing inside it (prints, handwriting font) loads until opened;
+   if the script never runs, the head failsafe drops .js and the archive is simply open */
+.js .notes-folio:not(.is-shown) { display: none; }
+.notes-folio { --sit-h: 250px; margin-top: calc(var(--sit-h) * 0.5 + var(--sp-6)); }
+.folio {
+  position: relative;
+  background: #f5f3eb;
+  border: 1px solid var(--rule); border-radius: 14px;
+  padding: clamp(18px, 3vw, 40px) clamp(16px, 3vw, 40px) clamp(16px, 2vw, 24px);
+  box-shadow: 0 1px 2px rgba(16, 35, 28, 0.06), 0 24px 48px -32px rgba(16, 35, 28, 0.45);
+}
+.sitter { position: absolute; right: 9%; top: calc(var(--sit-h) * -0.47); height: var(--sit-h); width: auto; pointer-events: none; z-index: 2; }
+.folio-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px;
+  padding-bottom: var(--sp-4); margin-bottom: var(--sp-6); border-bottom: 1px solid var(--ink);
+  padding-right: calc(var(--sit-h) * 0.4);
+}
+.folio-mark { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: var(--f-small); font-weight: 640; font-stretch: 125%; letter-spacing: 0.06em; text-transform: uppercase; }
+.folio-mark .tg { width: 22px; height: 22px; stroke-width: 4; }
+.folio-sub .nw { white-space: nowrap; }
+.folio-sub { font-size: var(--f-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.folio-body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: calc(var(--sp-6) + 12px) clamp(16px, 2vw, 28px); align-items: start; }
+.print {
+  position: relative; margin: 0;
+  background: #fcfbf7; padding: 10px 10px 0;
+  box-shadow: 0 1px 2px rgba(16, 35, 28, 0.12), 0 12px 26px -16px rgba(16, 35, 28, 0.4);
+  transform: rotate(var(--r, 0deg));
+  transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out);
+}
+.print-img { position: relative; background: #fcfbf7; }
+.print-img img { display: block; width: 100%; height: auto; }
+.print-img canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity 600ms var(--ease); }
+.print-img.developing img { opacity: 0.01; }
+.print-img.developing.developed img { opacity: 1; transition: opacity 600ms var(--ease); }
+.print-img.developed canvas { opacity: 0; }
+.print figcaption { display: flex; gap: 0.7em; align-items: baseline; padding: 10px 2px 12px; font-size: 12px; line-height: 1.35; color: var(--ink-2); }
+.pn { color: var(--shift-a); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hand {
+  position: absolute; bottom: -1.75em; left: 6px;
+  font-family: "Caveat", "Segoe Print", "Bradley Hand", cursive; font-weight: 500; font-size: 1.3rem; line-height: 1;
+  color: var(--shift-a); transform: rotate(-2.5deg); white-space: nowrap;
+}
+@media (hover: hover) {
+  .print:hover { transform: rotate(0deg) translateY(-4px); z-index: 3; box-shadow: 0 1px 2px rgba(16, 35, 28, 0.12), 0 22px 36px -18px rgba(16, 35, 28, 0.45); }
+}
+.p1 { grid-column: 1 / 8; --r: -1.1deg; }
+.p2 { grid-column: 8 / 13; --r: 1.5deg; margin-top: 56px; }
+.p2 .hand { left: auto; right: 4px; transform: rotate(2deg); }
+.p3 { grid-column: 1 / 5; grid-row: 2 / 4; --r: 0.9deg; }
+.p4 { grid-column: 5 / 9; --r: -0.8deg; margin-top: 28px; }
+.p5 { grid-column: 9 / 13; --r: 1.7deg; }
+.p5 .hand { left: auto; right: 4px; }
+.index-card {
+  grid-column: 5 / 12; grid-row: 3; align-self: start; margin-top: 6px;
+  position: relative; padding: 6px 22px 10px;
+  background: #fffdf8 repeating-linear-gradient(to bottom, transparent 0 25px, rgba(37, 76, 150, 0.12) 25px 26px);
+  border: 1px solid var(--rule); border-top: 3px solid rgba(169, 40, 31, 0.55);
+  transform: rotate(-0.6deg);
+  font-size: var(--f-small); line-height: 26px; color: var(--ink-2);
+}
+.ic-k { font-size: var(--f-meta); font-weight: 640; font-stretch: 125%; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); line-height: 26px; }
+.ic-note { margin-top: 4px; font-family: "Caveat", "Segoe Print", cursive; font-size: 1.25rem; color: var(--shift-a); }
+.folio-foot { display: flex; justify-content: flex-end; margin-top: var(--sp-6); padding-top: var(--sp-3); border-top: 1px solid var(--rule); }
+.folio-close {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
+  background: none; border: 1px solid var(--rule-2); border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: var(--f-small); font-weight: 560; color: var(--ink);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.folio-close:hover { border-color: var(--ink); }
+.folio-close svg { width: 16px; height: 16px; }
+
+/* opening: the card unfolds downward from the signature's edge, prints settle one by one */
+@media (prefers-reduced-motion: no-preference) {
+  .js .notes-folio .folio { clip-path: inset(0 0 100% 0 round 14px); transform: translateY(-10px); transition: clip-path 650ms var(--ease), transform 650ms var(--ease); }
+  .js .notes-folio.is-open .folio { clip-path: inset(-400px -40px -40px -40px round 14px); transform: none; }
+  .js .notes-folio .print, .js .notes-folio .index-card { opacity: 0; translate: 0 14px; transition: opacity 500ms var(--ease), translate 600ms var(--ease), transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); }
+  .js .notes-folio.is-open .print, .js .notes-folio.is-open .index-card { opacity: 1; translate: 0 0; }
+  .js .notes-folio.is-open .p1 { transition-delay: 120ms, 120ms, 0s, 0s; }
+  .js .notes-folio.is-open .p2 { transition-delay: 200ms, 200ms, 0s, 0s; }
+  .js .notes-folio.is-open .p3 { transition-delay: 280ms, 280ms, 0s, 0s; }
+  .js .notes-folio.is-open .p4 { transition-delay: 360ms, 360ms, 0s, 0s; }
+  .js .notes-folio.is-open .p5 { transition-delay: 440ms, 440ms, 0s, 0s; }
+  .js .notes-folio.is-open .index-card { transition-delay: 520ms, 520ms, 0s, 0s; }
+  .js .notes-folio .sitter { opacity: 0; translate: 0 -16px; transition: opacity 400ms var(--ease) 560ms, translate 500ms var(--ease) 560ms; }
+  .js .notes-folio.is-open .sitter { opacity: 1; translate: 0 0; }
+}
+
+/* phones: a vertical field-notes card, not the desktop composition shrunk */
+@media (max-width: 700px) {
+  .notes-folio { --sit-h: 150px; }
+  .sitter { right: 14px; }
+  .folio-head { flex-direction: column; gap: 4px; }
+  .folio-body { grid-template-columns: minmax(0, 1fr); gap: calc(var(--sp-6) + 18px); }
+  .p1, .p2, .p3, .p4, .p5, .index-card { grid-column: 1; grid-row: auto; margin-top: 0; }
+  .p1 { --r: -0.6deg; } .p2 { --r: 0.6deg; } .p3 { --r: 0.4deg; } .p4 { --r: -0.5deg; } .p5 { --r: 0.6deg; }
+  .p3 { width: 78%; justify-self: center; }
+  .index-card { transform: none; }
+  .folio-foot { justify-content: stretch; }
+  .folio-close { width: 100%; justify-content: center; }
+}
+
 /* ============================== MICRO-INTERACTIONS ============================== */
 /* links: a quiet rule always present, an ink rule that draws over it on hover */
 .link {
@@ -801,9 +930,10 @@ table { border-collapse: collapse; width: 100%; }
   .js .album .frame.in img { transition: clip-path 900ms var(--ease), transform var(--dur-normal) var(--ease-out); }
   .js .award-photo.frame img { clip-path: inset(0 round var(--radius)); }
 
-  .js .signoff path { stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease) 200ms; }
-  .js .signoff path + path { transition-duration: 450ms; transition-delay: 1000ms; }
-  .js .signoff .tg-sign-rule { transition-duration: 600ms; transition-delay: 1350ms; }
+  .js .signoff path { stroke-dashoffset: 1; transition: stroke-dashoffset 420ms var(--ease) 200ms; }
+  .js .signoff .tgs-t path + path { transition-delay: 560ms; transition-duration: 380ms; }
+  .js .signoff .tgs-g path { transition-delay: 860ms; transition-duration: 700ms; }
+  .js .signoff .tg-sign-rule { transition-duration: 600ms; transition-delay: 1450ms; }
   .js .signoff.in path { stroke-dashoffset: 0; }
   .js .signoff.rv { transform: none; }
 }

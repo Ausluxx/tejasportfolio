@@ -281,6 +281,109 @@
   }
   printPortrait();
 
+
+  /* ---------- TG / field notes ----------
+     The signature that closes the personal note is a found object: its T and
+     G part when you reach for it, and pressing it unfolds a small archive of
+     prints, each developing from dithered ink like the hero portrait.
+     Without JavaScript the archive is simply open. */
+  var INK = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,
+             3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+  function develop(wrap, wait) {
+    var img = wrap.querySelector("img");
+    if (!img || reduce || !window.HTMLCanvasElement || wrap.__dev) return;
+    wrap.__dev = true;
+    var cv = doc.createElement("canvas"); cv.setAttribute("aria-hidden", "true");
+    wrap.appendChild(cv); wrap.classList.add("developing");
+    var ended = false;
+    function end() {
+      if (ended) return; ended = true;
+      wrap.classList.add("developed");
+      setTimeout(function () { cv.remove(); wrap.classList.remove("developing", "developed"); wrap.__dev = false; }, 650);
+    }
+    setTimeout(end, 4500);
+    function run() {
+      var box = wrap.getBoundingClientRect();
+      if (!box.width || !img.naturalWidth) { end(); return; }
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = Math.round(box.width * dpr), H = Math.round(box.height * dpr);
+      var cols = Math.max(48, Math.min(110, Math.round(box.width / 5)));
+      var rows = Math.round(cols * box.height / box.width);
+      var off = doc.createElement("canvas"); off.width = cols; off.height = rows;
+      var o = off.getContext("2d", { willReadFrequently: true }); o.drawImage(img, 0, 0, cols, rows);
+      var px; try { px = o.getImageData(0, 0, cols, rows).data; } catch (e) { end(); return; }
+      var cells = [];
+      for (var i = 0; i < cols * rows; i++) {
+        var r = (i / cols) | 0, c = i % cols;
+        var l = (0.2126 * px[i * 4] + 0.7152 * px[i * 4 + 1] + 0.0722 * px[i * 4 + 2]) / 255;
+        if (l * 1.08 >= (INK[(r % 8) * 8 + (c % 8)] + 0.5) / 64) continue;
+        var h = Math.sin(i * 12.9898) * 43758.5453; h -= Math.floor(h);
+        cells.push(c, r, 0.5 * (r / rows) + 0.2 * (c / cols) + 0.22 * h);
+      }
+      cv.width = W; cv.height = H;
+      var ctx = cv.getContext("2d"), cw = W / cols, ch = H / rows, dot = Math.min(cw, ch) * 0.86;
+      ctx.fillStyle = "#10231c";
+      var DUR = 820, CELL = 0.12, SPAN = 0.92 + CELL, t0 = null;
+      function frame(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / DUR, 1) * SPAN;
+        ctx.clearRect(0, 0, W, H);
+        for (var k = 0; k < cells.length; k += 3) {
+          var d = cells[k + 2]; if (p <= d) continue;
+          var g = Math.min(1, (p - d) / CELL), sz = dot * (0.35 + 0.65 * g);
+          ctx.fillRect(cells[k] * cw + (cw - sz) / 2, cells[k + 1] * ch + (ch - sz) / 2, sz, sz);
+        }
+        if (ts - t0 < DUR) requestAnimationFrame(frame); else setTimeout(end, 90);
+      }
+      setTimeout(function () { requestAnimationFrame(frame); }, wait);
+    }
+    (img.decode ? img.decode() : Promise.resolve()).then(run, end);
+  }
+
+  (function fieldNotes() {
+    var btn = doc.querySelector(".tg-stamp");
+    var box = doc.getElementById("field-notes");
+    if (!btn || !box) return;
+    var act = btn.querySelector(".stamp-act");
+    var closer = box.querySelector(".folio-close");
+    box.hidden = true;
+
+    /* fetch the prints quietly once the section is close, so opening is instant */
+    whenNear(btn, function () {
+      [].forEach.call(box.querySelectorAll('img[loading="lazy"]'), function (im) { im.loading = "eager"; });
+    });
+
+    var timer = null;
+    function open() {
+      clearTimeout(timer);
+      box.hidden = false;
+      box.classList.add("is-shown");
+      btn.setAttribute("aria-expanded", "true");
+      if (act) act.textContent = "fold";
+      box.getBoundingClientRect();
+      box.classList.add("is-open");
+      [].forEach.call(box.querySelectorAll(".print-img"), function (w, i) { develop(w, 260 + i * 110); });
+      var top = box.getBoundingClientRect().top;
+      if (top > window.innerHeight * 0.6) box.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    }
+    function close(refocus) {
+      box.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      if (act) act.textContent = "open";
+      timer = setTimeout(function () { box.hidden = true; box.classList.remove("is-shown"); }, reduce ? 0 : 460);
+      if (refocus) btn.focus({ preventScroll: true });
+    }
+    btn.addEventListener("click", function () {
+      if (btn.getAttribute("aria-expanded") === "true") close(false); else open();
+    });
+    if (closer) closer.addEventListener("click", function () {
+      close(true);
+      var r = btn.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > window.innerHeight) btn.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    });
+    box.addEventListener("keydown", function (e) { if (e.key === "Escape") close(true); });
+  })();
+
   /* ---------- verification: footnote marks <-> notes ---------- */
   function linkNotes(sel) {
     [].forEach.call(doc.querySelectorAll(sel), function (el) {
