@@ -172,11 +172,20 @@
     }, { threshold: 0.2 });
     o.observe(svg);
   }
-  [].forEach.call(doc.querySelectorAll('[data-g="rosette"]'), function (svg) { engraveOnView(svg, drawRosette(svg)); });
+  /* run fn once, when el comes within reach of the viewport */
+  function whenNear(el, fn) {
+    if (!hasIO) { fn(); return; }
+    var o = new IntersectionObserver(function (en) {
+      if (!en[0].isIntersecting) return;
+      o.disconnect(); fn();
+    }, { rootMargin: "600px 0px" });
+    o.observe(el);
+  }
+  [].forEach.call(doc.querySelectorAll('[data-g="rosette"]'), function (svg) { whenNear(svg, function () { engraveOnView(svg, drawRosette(svg)); }); });
 
   /* the underprint: the band maths repeated down the ledger at hairline weight,
      faint enough that every figure and label keeps its contrast */
-  [].forEach.call(doc.querySelectorAll('[data-g="underprint"]'), function (svg) {
+  [].forEach.call(doc.querySelectorAll('[data-g="underprint"]'), function (svg) { whenNear(svg, function () {
     var W = 1200, H = 600, rows = 22, steps = 500;
     var paint = strokeGradient(svg, "gr-under", "#8fb09c", "#a99bd0", false);
     for (var r = 0; r < rows; r++) {
@@ -188,9 +197,9 @@
       }
       addPath(svg, d, paint, "0.26");
     }
-  });
+  }); });
 
-  [].forEach.call(doc.querySelectorAll('[data-g="band"]'), function (svg) {
+  [].forEach.call(doc.querySelectorAll('[data-g="band"]'), function (svg) { whenNear(svg, function () {
     var paths = drawBand(svg);
     if (reduce || !hasIO) return;
     paths.forEach(function (p) { var l = p.getTotalLength(); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
@@ -203,7 +212,7 @@
       });
     }, { threshold: 0.2 });
     o.observe(svg);
-  });
+  }); });
 
   /* ---------- verification: footnote marks <-> notes ---------- */
   function linkNotes(sel) {
@@ -239,43 +248,13 @@
     [].forEach.call(ticks, function (t, i) { if (labels[i]) t.style.setProperty("--at", pos(months(labels[i])).toFixed(4)); });
   });
 
-  /* ---------- figures resolve once ---------- */
-  function fmt(el, v) {
-    var dec = parseInt(el.getAttribute("data-dec") || "0", 10);
-    return (el.getAttribute("data-prefix") || "") + v.toFixed(dec) + (el.getAttribute("data-suffix") || "");
-  }
-  /* once settled, a figure is final: no late animation frame may overwrite it */
-  function settle(el) { el.__done = true; el.textContent = fmt(el, parseFloat(el.getAttribute("data-count"))); }
-  function count(el) {
-    var target = parseFloat(el.getAttribute("data-count")), t0 = null, dur = 1300;
-    function step(ts) {
-      if (el.__done) return;
-      if (t0 === null) t0 = ts;
-      var p = Math.min((ts - t0) / dur, 1);
-      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-      el.textContent = fmt(el, target * e);
-      if (p < 1) requestAnimationFrame(step); else settle(el);
-    }
-    requestAnimationFrame(step);
-    /* never leave a figure short of its true value, even if frames stall */
-    setTimeout(function () { settle(el); }, dur + 250);
-  }
-  var nums = doc.querySelectorAll("[data-count]");
-  if (reduce || !hasIO) { [].forEach.call(nums, settle); }
-  else {
-    var nio = new IntersectionObserver(function (en) {
-      en.forEach(function (e) { if (!e.isIntersecting) return; count(e.target); nio.unobserve(e.target); });
-    }, { threshold: 0.7 });
-    [].forEach.call(nums, function (n) { nio.observe(n); });
-  }
-
   /* ---------- reveals ---------- */
-  var rv = doc.querySelectorAll(".rv, .bars, .gantt");
+  var rv = doc.querySelectorAll(".rv, .bars, .gantt, .ruled");
   if (reduce || !hasIO) { [].forEach.call(rv, function (el) { el.classList.add("in"); }); }
   else {
     var io = new IntersectionObserver(function (en) {
       en.forEach(function (e) { if (!e.isIntersecting) return; e.target.classList.add("in"); io.unobserve(e.target); });
-    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
     [].forEach.call(rv, function (el) { io.observe(el); });
   }
 })();

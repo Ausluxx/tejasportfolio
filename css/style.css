@@ -5,6 +5,17 @@
 
 /* ============================== TOKENS ============================== */
 
+@font-face {
+  font-family: "Mona Sans"; font-style: normal; font-weight: 200 900; font-stretch: 75% 125%; font-display: swap;
+  src: url("../assets/fonts/mona-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Mona Sans"; font-style: normal; font-weight: 200 900; font-stretch: 75% 125%; font-display: swap;
+  src: url("../assets/fonts/mona-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root {
   /* paper and ink */
   --paper: #edf0ea;
@@ -66,7 +77,13 @@
   --sec-bot: clamp(28px, 3vw, 44px);
   --head-gap: var(--sp-6);
 
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* motion: three speeds, two curves */
+  --dur-fast: 150ms;     /* state changes: colour, press */
+  --dur-normal: 300ms;   /* hover moves, underlines, menus */
+  --dur-slow: 600ms;     /* reveals and rules */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);        /* reveals: decisive, long settle */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); /* interactions: quick, unfussy */
+  --rise: 12px;
   --radius: 14px;
 }
 
@@ -150,7 +167,7 @@ table { border-collapse: collapse; width: 100%; }
 
 /* colour-shift ink: the only saturated colour on paper, reserved for
    figures and the thing being verified */
-.shift { color: var(--shift-a); transition: color 0.5s var(--ease); }
+.shift { color: var(--shift-a); transition: color var(--dur-normal) var(--ease-out); }
 
 .fig {
   font-stretch: 125%;
@@ -158,7 +175,6 @@ table { border-collapse: collapse; width: 100%; }
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: -0.02em;
   color: var(--shift-a);
-  transition: color 0.45s var(--ease), font-weight 0.45s var(--ease);
   white-space: nowrap;
 }
 .neg { color: var(--neg); }
@@ -187,7 +203,7 @@ table { border-collapse: collapse; width: 100%; }
   -webkit-backdrop-filter: saturate(1.2) blur(12px);
   backdrop-filter: saturate(1.2) blur(12px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.4s var(--ease);
+  transition: border-color var(--dur-normal) var(--ease-out);
 }
 .nav.scrolled { border-bottom-color: var(--rule); }
 .nav-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 68px; }
@@ -197,7 +213,6 @@ table { border-collapse: collapse; width: 100%; }
   font-size: 1.0625rem; font-weight: 640; font-stretch: 112%; letter-spacing: -0.02em;
   color: var(--ink); text-decoration: none;
 }
-.brand-mark { width: 26px; height: 26px; flex: none; }
 
 .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.2vw, 30px); }
 .nav-links a {
@@ -207,7 +222,7 @@ table { border-collapse: collapse; width: 100%; }
 .nav-links a::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
   background: var(--shift-a); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.45s var(--ease);
+  transition: transform var(--dur-normal) var(--ease-out);
 }
 .nav-links a:hover::after, .nav-links a[aria-current="true"]::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
 .nav-links a[aria-current="true"], .nav-links a[aria-current="page"] { color: var(--ink); }
@@ -227,9 +242,9 @@ table { border-collapse: collapse; width: 100%; }
   border-radius: 999px;
   font-size: 0.9688rem; font-weight: 560; letter-spacing: -0.005em;
   text-decoration: none; white-space: nowrap;
-  transition: background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease);
+  transition: background-color var(--dur-normal) var(--ease-out), color var(--dur-normal) var(--ease-out), border-color var(--dur-normal) var(--ease-out);
 }
-.btn svg { width: 18px; height: 18px; flex: none; transition: transform 0.45s var(--ease); }
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform var(--dur-normal) var(--ease-out); }
 .btn:hover svg { transform: translate(2px, 2px); }
 .btn-ink { background: var(--ink); color: var(--paper); }
 .btn-ink:hover { background: var(--shift-a); }
@@ -243,7 +258,7 @@ table { border-collapse: collapse; width: 100%; }
   font-size: var(--f-small); font-weight: 560; color: var(--ink);
   text-decoration: underline; text-decoration-color: var(--rule-2);
 }
-.link svg { width: 15px; height: 15px; transition: transform 0.4s var(--ease); }
+.link svg { width: 15px; height: 15px; transition: transform var(--dur-normal) var(--ease-out); }
 .link:hover { color: var(--shift-b); text-decoration-color: currentColor; }
 .link:hover svg { transform: translate(1px, -1px); }
 
@@ -302,7 +317,7 @@ table { border-collapse: collapse; width: 100%; }
   font-size: max(11px, 0.62em); font-weight: 640; line-height: 1;
   color: var(--shift-a); text-decoration: none;
   border: 1px solid currentColor; border-radius: 999px;
-  transition: color 0.35s var(--ease), background-color 0.35s var(--ease);
+  transition: color var(--dur-normal) var(--ease-out), background-color var(--dur-normal) var(--ease-out);
 }
 .fn:hover, .fn.lit { background: var(--shift-b); border-color: var(--shift-b); color: var(--paper); }
 
@@ -315,14 +330,14 @@ table { border-collapse: collapse; width: 100%; }
   display: grid; grid-template-columns: auto 1fr; gap: 12px;
   padding: var(--sp-4) clamp(12px, 1.6vw, 22px) 0 0;
   font-size: var(--f-meta); line-height: var(--lh-lead); color: var(--muted);
-  transition: color 0.35s var(--ease);
+  transition: color var(--dur-normal) var(--ease-out);
   scroll-margin-top: 120px;
 }
 .notes li + li { padding-left: clamp(12px, 1.6vw, 22px); border-left: 1px solid var(--rule); }
 .notes .nm {
   display: grid; place-items: center; width: 20px; height: 20px; border-radius: 999px;
   border: 1px solid var(--shift-a); color: var(--shift-a); font-size: 11px; font-weight: 640; line-height: 1;
-  transition: background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease);
+  transition: background-color var(--dur-normal) var(--ease-out), color var(--dur-normal) var(--ease-out), border-color var(--dur-normal) var(--ease-out);
 }
 .notes li.lit, .notes li:target { color: var(--ink); }
 .notes li.lit .nm, .notes li:target .nm { background: var(--shift-b); border-color: var(--shift-b); color: var(--paper); }
@@ -344,11 +359,12 @@ table { border-collapse: collapse; width: 100%; }
 .cut-in { clip-path: ellipse(37% 38.5% at 50% 50%); }
 .cut-out { clip-path: inset(0 0 50% 0); }
 .vignette .micro { margin-top: var(--sp-4); }
-.micro-cap { white-space: normal; text-align: center; text-wrap: balance; }
+.micro-cap { white-space: normal; text-align: center; }
+.micro-cap span { white-space: nowrap; }
 
 /* watermark reveal: the portrait surfaces like a watermark held to light */
 @keyframes watermark { from { opacity: 0.2; transform: scale(1.03); } to { opacity: 1; transform: none; } }
-@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(var(--rise)); } to { opacity: 1; transform: none; } }
 
 /* ============================== FIGURES LEDGER ============================== */
 
@@ -369,15 +385,15 @@ table { border-collapse: collapse; width: 100%; }
 .ledger .c-when { width: 12%; color: var(--muted); font-variant-numeric: tabular-nums; }
 .ledger .fig { font-size: var(--f-fig); line-height: 1; }
 .ledger .fig small { font-size: 0.42em; font-stretch: 100%; font-weight: 500; letter-spacing: 0; margin-left: 0.15em; color: var(--muted); }
-.ledger tr { transition: background-color 0.35s var(--ease); }
+.ledger tr { transition: background-color var(--dur-normal) var(--ease-out); }
 .src { display: inline-flex; align-items: baseline; gap: 6px; }
 .src .ok {
   width: 14px; height: 14px; flex: none; align-self: center; color: var(--shift-b);
-  opacity: 0; transform: scale(0.6); transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  opacity: 0; transform: scale(0.6); transition: opacity var(--dur-normal) var(--ease-out), transform var(--dur-normal) var(--ease-out);
 }
 .src a { color: inherit; }
 .ledger tbody tr:hover .fig, .ledger tbody tr:focus-within .fig,
-.ledger tbody tr.lit .fig { color: var(--shift-b); font-weight: 600; }
+.ledger tbody tr.lit .fig { color: var(--shift-b); text-decoration-color: currentColor; }
 .ledger tbody tr:hover .ok, .ledger tbody tr:focus-within .ok,
 .ledger tbody tr.lit .ok { opacity: 1; transform: none; }
 .ledger tbody tr:hover .c-src, .ledger tbody tr:focus-within .c-src { color: var(--ink); }
@@ -481,13 +497,13 @@ table { border-collapse: collapse; width: 100%; }
   gap: 20px; align-items: baseline;
   padding: var(--sp-5) 0; border-bottom: 1px solid var(--rule);
   text-decoration: none; color: var(--ink-2);
-  transition: background-color 0.35s var(--ease), padding 0.35s var(--ease);
+  transition: background-color var(--dur-normal) var(--ease-out);
 }
 .index .nm { color: var(--ink); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; }
 .index .q { font-size: var(--f-small); }
 .index .k { font-size: var(--f-meta); color: var(--muted); }
-.index svg { width: 18px; height: 18px; color: var(--ink); align-self: center; transition: transform 0.45s var(--ease); }
-.index a:hover { background: var(--paper-2); padding-inline: 14px; }
+.index svg { width: 18px; height: 18px; color: var(--ink); align-self: center; transition: transform var(--dur-normal) var(--ease-out); }
+.index a:hover { background: var(--paper-2); }
 .index a:hover .nm { color: var(--shift-b); }
 .index a:hover svg { transform: translate(2px, -2px); }
 
@@ -606,18 +622,6 @@ table { border-collapse: collapse; width: 100%; }
 .interests li { font-size: var(--f-meta); border: 1px solid var(--rule-2); border-radius: 999px; padding: 6px 13px; color: var(--ink-2); }
 
 .album { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(10px, 1.2vw, 16px); }
-.album figure { position: relative; overflow: hidden; border-radius: 12px; background: var(--paper-3); }
-.album img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
-.album figure:hover img { transform: scale(1.03); }
-.album figcaption {
-  position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px);
-  padding: 4px 9px; border-radius: 6px;
-  background: rgba(12, 21, 18, 0.92);
-  font-size: 12px; line-height: 1.35; color: var(--on-deep);
-}
-.a-wide { grid-column: span 6; aspect-ratio: 3 / 2; }
-.a-tall { grid-column: span 3; aspect-ratio: 3 / 4; }
-.a-third { grid-column: span 2; aspect-ratio: 3 / 4; }
 
 /* ============================== CONTACT ============================== */
 
@@ -633,14 +637,14 @@ table { border-collapse: collapse; width: 100%; }
   color: var(--on-deep); text-decoration: underline; text-decoration-color: var(--on-deep-rule); text-underline-offset: 0.2em;
   overflow-wrap: anywhere;
 }
-.mail svg { width: 0.8em; height: 0.8em; flex: none; transition: transform 0.45s var(--ease); }
+.mail svg { width: 0.8em; height: 0.8em; flex: none; transition: transform var(--dur-normal) var(--ease-out); }
 .mail:hover { color: var(--mint); text-decoration-color: currentColor; }
 .mail:hover svg { transform: translate(3px, -3px); }
 .c-links { margin-top: var(--sp-6); display: flex; flex-wrap: wrap; gap: 12px; }
 .c-links a {
   display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px;
   border: 1px solid #2c3a34; border-radius: 999px; color: var(--on-deep); text-decoration: none; font-size: var(--f-small); font-weight: 560;
-  transition: border-color 0.35s var(--ease), background-color 0.35s var(--ease);
+  transition: border-color var(--dur-normal) var(--ease-out), background-color var(--dur-normal) var(--ease-out);
 }
 .c-links a:hover { border-color: var(--mint); background: #13201b; }
 .c-links svg { width: 17px; height: 17px; }
@@ -684,11 +688,141 @@ table { border-collapse: collapse; width: 100%; }
 
 .cta-band { margin-top: var(--sp-7); }
 
+/* ============================== TG MARK ============================== */
+/* two strokes: the T's bar runs on into the G's bowl, and the G hugs the
+   T's stem. Drawn with pathLength="1", so every draw is the same maths */
+.tg { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 3.6; }
+.brand .tg { width: 28px; height: 28px; color: var(--ink); stroke-width: 3.8; }
+.foot .brand { display: inline-flex; align-items: center; gap: 10px; }
+.foot .brand .tg { color: var(--mint); }
+.tg path, .tg-sign path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .nav .brand .tg path { animation: draw 700ms var(--ease) 150ms both; }
+  .nav .brand .tg path + path { animation-delay: 650ms; animation-duration: 350ms; }
+}
+
+/* the signature that closes the personal note */
+.signoff { margin-top: var(--sp-6); }
+.tg-sign { width: 104px; height: auto; fill: none; stroke: var(--shift-a); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.tg-sign .tg-sign-rule { stroke-width: 1.1; }
+
+/* ============================== PERSONAL ============================== */
+/* photographs set like plates in a printed document: the caption sits below,
+   numbered, rather than chipped onto the picture */
+.album { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sp-6) clamp(12px, 1.4vw, 20px); align-items: start; }
+.album figure { position: relative; }
+.album img { width: 100%; height: auto; object-fit: cover; border-radius: 12px; background: var(--paper-3); display: block; }
+.a-wide { grid-column: span 6; } .a-wide img { aspect-ratio: 3 / 2; }
+.a-tall { grid-column: span 3; } .a-tall img { aspect-ratio: 3 / 4; }
+.a-third { grid-column: span 2; } .a-third img { aspect-ratio: 3 / 4; }
+.album .a-tall + .a-tall { margin-top: var(--sp-7); }  /* offset, like a contact sheet laid by hand */
+.album figcaption { margin-top: var(--sp-3); font-size: var(--f-meta); line-height: var(--lh-lead); color: var(--muted); }
+.plate { color: var(--shift-a); font-weight: 600; font-variant-numeric: tabular-nums; margin-right: 0.6em; }
+@media (hover: hover) {
+  .album img { transition: transform var(--dur-normal) var(--ease-out); }
+  .album figure:hover img { transform: translateY(-3px); }
+  .album figure:hover .plate { color: var(--shift-b); }
+}
+
+/* ============================== MICRO-INTERACTIONS ============================== */
+/* links: a quiet rule always present, an ink rule that draws over it on hover */
+.link {
+  text-decoration: none;
+  background:
+    linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat,
+    linear-gradient(var(--rule-2), var(--rule-2)) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 2px;
+  transition: color var(--dur-fast) var(--ease-out), background-size var(--dur-normal) var(--ease-out);
+}
+.link:hover, .link:focus-visible { background-size: 100% 1px, 100% 1px; }
+.btn:active, .c-links a:active { transform: scale(0.98); transition-duration: var(--dur-fast); }
+.index a:hover .nm, .index a:focus-visible .nm { transform: translateX(4px); }
+.index .nm { transition: transform var(--dur-normal) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+@media (hover: hover) {
+  .shot img { transition: transform var(--dur-normal) var(--ease-out); }
+  .feature:hover .shot img { transform: translateY(-3px); }
+}
+
+/* figures: verification is a colour change and an underline, never a weight change */
+.ledger .fig { text-decoration: underline 2px transparent; text-underline-offset: 0.14em; transition: color var(--dur-normal) var(--ease-out), text-decoration-color var(--dur-normal) var(--ease-out); }
+.ledger tbody tr:hover .fig, .ledger tbody tr:focus-within .fig { text-decoration-color: currentColor; }
+
+/* footnotes: a comfortable tap target, and the note's top rule lights when its marker does */
+.fn { position: relative; }
+.fn::after { content: ""; position: absolute; inset: -12px -9px; }
+.notes li { position: relative; }
+.notes li::after {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px;
+  background: var(--shift-b); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-normal) var(--ease-out);
+}
+.notes li.lit::after, .notes li:target::after { transform: scaleX(1); }
+
+/* ============================== MOTION SYSTEM ============================== */
+/* Four reveals, each with one job, so sections never enter identically:
+   1. editorial rule   - the ink rule that opens a block draws left to right
+   2. headline         - section headings rise out of their own baseline
+   3. figure           - numbers surface through a vertical mask (no count-up:
+                         a page about verified numbers never shows a wrong one)
+   4. frame            - photographs open inside their frame
+   Body copy only fades. Everything is visible without JS and under reduced motion. */
+.js .ruled { position: relative; border-top-color: transparent !important; }
+.js .ruled::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: var(--ink); transform-origin: left;
+  transition: transform 900ms var(--ease);
+}
+.fig { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .ruled:not(.in)::before { transform: scaleX(0); }
+
+  .js .sec-head.rv { opacity: 1; transform: none; }
+  .js .sec-head h2 { transition: clip-path 800ms var(--ease), transform 800ms var(--ease); clip-path: inset(-0.25em -0.1em -0.35em -0.1em); }
+  .js .sec-head:not(.in) h2 { clip-path: inset(0 0 100% 0); transform: translateY(0.45em); }
+  .js .sec-head .lead { transition: opacity var(--dur-slow) var(--ease) 140ms, transform var(--dur-slow) var(--ease) 140ms; }
+  .js .sec-head:not(.in) .lead { opacity: 0; transform: translateY(8px); }
+
+  .js .rv .fig { transition: clip-path 700ms var(--ease), transform 700ms var(--ease), color var(--dur-normal) var(--ease-out), text-decoration-color var(--dur-normal) var(--ease-out); clip-path: inset(-0.3em -0.2em -0.3em -0.2em); }
+  .js .rv:not(.in) .fig { clip-path: inset(0 0 100% 0); transform: translateY(0.5em); }
+  .js .ledger tbody tr:nth-child(2) .fig { transition-delay: 60ms; }
+  .js .ledger tbody tr:nth-child(3) .fig { transition-delay: 120ms; }
+  .js .ledger tbody tr:nth-child(4) .fig { transition-delay: 180ms; }
+  .js .ledger tbody tr:nth-child(5) .fig { transition-delay: 240ms; }
+  .js .ledger tbody tr:nth-child(6) .fig { transition-delay: 300ms; }
+  .js .ledger.in tbody tr .fig:hover { transition-delay: 0s; }
+
+  .js .frame.rv { opacity: 1; transform: none; }
+  .js .frame img { transition: clip-path 900ms var(--ease), transform 1100ms var(--ease); clip-path: inset(0 round 12px); }
+  .js .frame:not(.in) img { clip-path: inset(100% 0 0 0 round 12px); transform: scale(1.06); }
+  .js .frame figcaption { transition: opacity var(--dur-slow) var(--ease) 300ms; }
+  .js .frame:not(.in) figcaption { opacity: 0; }
+  .js .album .frame.in img { transition: clip-path 900ms var(--ease), transform var(--dur-normal) var(--ease-out); }
+  .js .award-photo.frame img { clip-path: inset(0 round var(--radius)); }
+
+  .js .signoff path { stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease) 200ms; }
+  .js .signoff path + path { transition-duration: 450ms; transition-delay: 1000ms; }
+  .js .signoff .tg-sign-rule { transition-duration: 600ms; transition-delay: 1350ms; }
+  .js .signoff.in path { stroke-dashoffset: 0; }
+  .js .signoff.rv { transform: none; }
+}
+
+/* phones: shorter distances, no masks on large blocks of type, nothing that
+   repaints a full-width image every frame */
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  :root { --rise: 6px; }
+  .js .sec-head h2 { clip-path: none; transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+  .js .sec-head:not(.in) h2 { clip-path: none; opacity: 0; transform: translateY(8px); }
+  .js .frame img { clip-path: none; transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+  .js .frame:not(.in) img { clip-path: none; opacity: 0; transform: translateY(8px); }
+  .js .album .frame.in img { transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+}
+
 /* ============================== REVEAL ============================== */
 /* content is visible by default; motion only applies once JS confirms it can
    reveal it, and never under reduced motion */
 @media (prefers-reduced-motion: no-preference) {
-  .js .rv { opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .js .rv { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
   .js .rv.in { opacity: 1; transform: none; }
   .hero .rise { animation: rise 1s var(--ease) both; }
   .hero-id .rise:nth-child(2) { animation-delay: 0.08s; }
@@ -701,7 +835,7 @@ table { border-collapse: collapse; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero .rise, .cut img { animation: none; }
-  .bar-fill, .gantt-bar { transition: none; }
+  .bar-fill, .gantt-bar, .tg path, .tg-sign path { transition: none; animation: none; }
   .js .bars:not(.in) .bar-fill, .js .gantt:not(.in) .gantt-bar { transform: none; }
 }
 
@@ -748,9 +882,9 @@ table { border-collapse: collapse; width: 100%; }
     padding: 8px var(--gutter) 24px;
     background: var(--paper); border-bottom: 1px solid var(--rule);
     visibility: hidden; opacity: 0; transform: translateY(-8px);
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
+    transition: opacity var(--dur-normal) var(--ease-out), transform var(--dur-normal) var(--ease-out), visibility 0s linear 0.3s;
   }
-  .nav.open .nav-links { visibility: visible; opacity: 1; transform: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+  .nav.open .nav-links { visibility: visible; opacity: 1; transform: none; transition: opacity var(--dur-normal) var(--ease-out), transform var(--dur-normal) var(--ease-out); }
   .nav-links a { padding: 14px 0; font-size: 1.0625rem; border-bottom: 1px solid var(--rule); }
   .nav-links a::after { display: none; }
   .nav-links .btn { margin-top: 16px; justify-content: center; border-bottom: 1px solid var(--rule-2); }
@@ -789,6 +923,12 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 @media (max-width: 560px) {
+  .album { gap: var(--sp-5) 12px; }
+  .a-tall, .a-third { grid-column: span 3; }
+  .album .a-tall + .a-tall { margin-top: 0; }
+  .album .a-third:last-child { grid-column: span 6; }
+  .album .a-third:last-child img { aspect-ratio: 4 / 3; object-position: 50% 40%; }
+  .tg-sign { width: 84px; }
   .hero { padding-top: var(--sp-3); }
   .vignette { width: min(86%, 300px); }
   .hero-name { font-size: clamp(3.4rem, 1.4rem + 10vw, 5rem); }
@@ -801,10 +941,6 @@ table { border-collapse: collapse; width: 100%; }
   .gantt-plot { left: calc(var(--lab) + 12px); }
   .g-grid .who { font-size: 12.5px; }
   .gantt-ticks > span:nth-child(2), .gantt-ticks > span:nth-child(4) { display: none; }
-  .a-tall { grid-column: span 6; aspect-ratio: 4 / 5; }
-  .a-third { grid-column: span 3; }
-  .album .a-third:last-child { grid-column: span 6; aspect-ratio: 4 / 3; }
-  .album .a-third:last-child img { object-position: 50% 40%; }
   .jump { grid-template-columns: minmax(0, 1fr); }
   .jump a:nth-child(2n) { padding-left: 0; border-left: 0; }
   .fp-tools .cols { grid-template-columns: minmax(0, 1fr); }
