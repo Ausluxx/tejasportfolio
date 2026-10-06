@@ -60,8 +60,8 @@
 <main id="main">
 
   <section class="ph wrap" aria-labelledby="ph-h">
-    <h1 class="display rv" id="ph-h">Nine projects, each started by a question.</h1>
-    <p class="lead rv">None of these were assigned for the sake of it. Each began with something a textbook couldn&rsquo;t settle. I build with modern tools, AI included. The financial reasoning is mine, and every result below comes from the project&rsquo;s own output.</p>
+    <h1 class="display rv" id="ph-h">Nine projects.</h1>
+    <p class="lead rv">Two were course projects and one was a case competition; the rest I started on my own. I build with modern tools, AI included. The financial reasoning is mine, and every result below comes from the project&rsquo;s own output.</p>
     <nav class="jump rv ruled" aria-label="Projects on this page">
       <a href="#nse">NSE Momentum + Quality <span>Factor investing</span></a>
       <a href="#fama">Fama-French Factor Engine <span>Quant finance</span></a>
@@ -90,10 +90,10 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">Do momentum and quality still earn their keep on Indian large-caps once you pay real trading costs?</p>
+        <p class="pr-q">Do momentum and quality work on Indian large-caps after trading costs?</p>
         <dl>
-          <div><dt>Approach</dt><dd>Rank stocks on combined momentum and quality signals, weighting the two by their measured information coefficient (IC&sup2;) over a 36-month training window rather than by gut feel.</dd></div>
-          <div><dt>What I built</dt><dd>A long-only strategy with portfolios built by a quadratic-programming optimiser under position limits, tested walk-forward with transaction costs, and an interactive dashboard to compare turnover settings.</dd></div>
+          <div><dt>Approach</dt><dd>Rank Nifty 50 stocks on momentum and quality, weighting the two signals by their measured information coefficients (IC&sup2;) over a 36-month training window.</dd></div>
+          <div><dt>What I built</dt><dd>A long-only strategy using a quadratic-programming optimiser with position limits, tested walk-forward with transaction costs, plus an interactive dashboard to compare turnover settings.</dd></div>
         </dl>
         <dl class="results">
           <div><dt>Total return</dt><dd><span class="fig">+81.3%</span><span class="vs">Nifty 50: +37.6%</span></dd></div>
@@ -104,7 +104,7 @@
         </dl>
         <dl>
           <div><dt>Result</dt><dd>Out of sample from February 2022 to June 2026, net of costs, the chosen setting (&lambda; = 0.05) compounded to 1.81&times; against 1.38&times; for the index. Best year +34.4% (2023), worst year (6.0%) (2026).</dd></div>
-          <div><dt>What it taught me</dt><dd>The most aggressive setting had the highest gross alpha but paid the most in costs; trading less won on a net basis. Momentum&rsquo;s IC was borderline (&minus;0.0018) against quality&rsquo;s +0.0064, so the blend leaned 58% quality. Out-of-sample testing and costs are what separate an edge from a curve-fit.</dd></div>
+          <div><dt>Turnover</dt><dd>The highest-turnover version had the best gross alpha but paid the most in costs, so it didn&rsquo;t win net; the moderate setting did. Momentum&rsquo;s measured IC was borderline (&minus;0.0018) against quality&rsquo;s +0.0064, so the blend leaned 58% quality.</dd></div>
         </dl>
         <p class="fine">Backtest results are hypothetical and net of modelled transaction costs.</p>
       </div>
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">What drives Indian equity returns beyond the market, and how do you report it without overstating the case?</p>
+        <p class="pr-q">What explains Indian equity returns beyond the market?</p>
         <dl>
           <div><dt>Approach</dt><dd>Construct the SMB and HML factors from size and value corner portfolios, then regress each stock on market, size and value with Newey-West (HAC) standard errors.</dd></div>
           <div><dt>What I built</dt><dd>A cached Streamlit dashboard with EWMA volatility, rolling-beta tracking, a factor heatmap and decomposition, and a bias-diagnostics module covering survivorship, look-ahead and sample attrition.</dd></div>
@@ -138,7 +138,7 @@
           <div><dt>Window</dt><dd><span class="fig">2 yrs</span><span class="vs">Jul 2024&ndash;Jul 2026</span></dd></div>
         </dl>
         <dl>
-          <div><dt>What it taught me</dt><dd>Why a single market beta was never enough, and the statistical discipline that keeps a factor result honest instead of merely impressive. The dashboard states its own caveat: it projects today&rsquo;s Nifty 50 backward, so survivorship bias is present.</dd></div>
+          <div><dt>Limitations</dt><dd>The dashboard states its own caveat: it projects today&rsquo;s Nifty 50 backward, so survivorship bias is present. Building the diagnostics made me much more careful about survivorship and look-ahead bias generally.</dd></div>
         </dl>
       </div>
     </div>
@@ -171,8 +171,8 @@
           <div><dt>Market price</dt><dd><span class="fig">$157.54</span><span class="vs">Nasdaq close, 1 July 2026</span></dd></div>
         </dl>
         <dl>
-          <div><dt>Result</dt><dd>Every scenario, on both methods, implies substantial downside to the market price. That doesn&rsquo;t mean the market is wrong; it shows how much of the valuation rests on expectations well beyond a five-year forecast.</dd></div>
-          <div><dt>What it taught me</dt><dd>Years of negative free cash flow from launch infrastructure, satellites and AI compute pushed most of the value into the terminal value. A DCF isn&rsquo;t a single correct price; it&rsquo;s a coherent story about growth, margins, capex, working capital, WACC and terminal value.</dd></div>
+          <div><dt>Result</dt><dd>Every scenario, on both methods, came out well below the market price, mainly because a large part of the value ended up in terminal value.</dd></div>
+          <div><dt>Why</dt><dd>Years of negative free cash flow from launch infrastructure, satellites and AI compute kept the forecast-period cash flows small. It was a good reminder that a DCF is only as good as its assumptions, particularly growth, margins, capex, WACC and terminal value.</dd></div>
         </dl>
         <p class="fine">An educational valuation exercise, not investment advice.</p>
       </div>
@@ -203,12 +203,11 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">What if research followed what had actually happened, instead of what the stock did?</p>
+        <p class="pr-q">Most people build market automations to get signals. I built mine to get better at thinking.</p>
         <dl>
           <div><dt>The morning dashboard</dt><dd>Refreshes before I wake up: India startup and VC activity, India macro (RBI, SEBI, GST, bonds, the rupee), global macro (Fed, ECB, China, yields, oil), a market snapshot, an IPO tracker and the day&rsquo;s calendar. Then one concept explained properly, one deep dive, one interview question with the common mistake, and a pattern of the day that forces the stories into a single thesis.</dd></div>
           <div><dt>The research terminal</dt><dd>Studies two to four companies every few days, each from a different industry and each picked because something happened: earnings, guidance, an acquisition, a regulatory decision. Nine sections per company, built on FMP market data, across semiconductors, medical devices, specialty retail and more.</dd></div>
-          <div><dt>The design rule</dt><dd>No buy or sell calls anywhere; the output is a set of questions I have to answer myself. A source-tier check rejects unverified claims and flags discrepancies, so the system admits what it doesn&rsquo;t know instead of confidently filling the gap.</dd></div>
-          <div><dt>What it taught me</dt><dd>What makes a company worth researching right now, and how to turn scattered fundamentals into something you can act on.</dd></div>
+          <div><dt>No calls</dt><dd>No buy or sell calls anywhere; the output is a set of questions I have to answer myself. A source-tier check rejects unverified claims and flags discrepancies, so the system admits what it doesn&rsquo;t know instead of confidently filling the gap.</dd></div>
         </dl>
       </div>
     </div>
@@ -237,7 +236,7 @@
         </dl>
         <dl>
           <div><dt>My answer</dt><dd>Make every match mint two things: a Challenge Card a friend has to install to answer, and a Cognitive Portfolio that makes leaving expensive. Then a gate: if the card&rsquo;s k-factor doesn&rsquo;t move toward 1 in the first quarter, fix the card before spending anything on growth.</dd></div>
-          <div><dt>What it taught me</dt><dd>The sharpest move is usually reframing the question rather than answering the one you were handed. It made the case round; it didn&rsquo;t make the top 10, and I posted the deck anyway.</dd></div>
+          <div><dt>Outcome</dt><dd>It made the case round; it didn&rsquo;t make the top 10, and I posted the deck anyway.</dd></div>
         </dl>
       </div>
     </div>
@@ -254,12 +253,12 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">Providers quietly take 0.3&ndash;0.8% above the mid-market rate on every remittance. Can a spread simply tell people when it&rsquo;s fair?</p>
+        <p class="pr-q">Remittance providers take 0.3&ndash;0.8% above the mid-market rate, and most people sending money home never see it.</p>
         <dl>
           <div><dt>The signal</dt><dd>Scores today&rsquo;s USD/INR spread against a 30-day rolling baseline using z-scores on RBI DBIE data, and reports green, amber or red.</dd></div>
           <div><dt>The calendar</dt><dd>A structural risk calendar flagging the predictable surges: month-end, FOMC and pre-Diwali.</dd></div>
           <div><dt>The true cost</dt><dd>An all-in channel comparator that includes the correspondent-bank charges most apps leave out, plus alerts the moment the spread hits a target. On a $1,500 transfer the hidden spread is &#8377;600&ndash;1,200, every month.</dd></div>
-          <div><dt>What it taught me</dt><dd>Baselines, mean reversion and how macro events move FX spreads. And one question from our professor that reshaped the business: if remittance companies don&rsquo;t partner with you, you&rsquo;re an information portal, so what&rsquo;s the moat? Built with a team of six.</dd></div>
+          <div><dt>Feedback</dt><dd>Our professor asked the question that reshaped the business: if remittance companies don&rsquo;t partner with you, you&rsquo;re just an information portal, so what&rsquo;s the moat? Built with a team of six.</dd></div>
         </dl>
       </div>
     </div>
@@ -277,7 +276,7 @@
         </div>
       </div>
       <div class="pr-body">
-        <p class="pr-q">Can you build a startup end to end, and defend it the way a founder would in front of investors?</p>
+        <p class="pr-q">A course project: we built a healthtech startup from scratch and pitched it to faculty investors.</p>
         <dl>
           <div><dt>The venture</dt><dd>A simulated healthtech company for condition-specific meal prep, aimed at India&rsquo;s 103M+ people with diabetes and 20M+ with PCOD, and at the 78% who drop prescribed diet plans within two weeks.</dd></div>
           <div><dt>The raise</dt><dd>A &#8377;16L SAFE note seed round at a &#8377;1.5 Cr valuation cap, with the valuation justified three different ways and a cap table before and after the round, backed by a three-year model of revenue, burn, runway, CAC and LTV.</dd></div>
@@ -289,7 +288,7 @@
           <div><dt>Investor return</dt><dd><span class="fig">7.4&times;</span><span class="vs">conservative case</span></dd></div>
         </dl>
         <dl>
-          <div><dt>What it taught me</dt><dd>Unit economics, SAFE-note and valuation-cap mechanics, and building a model that survives someone trying to break it. Pitched to faculty investors with a 12-slide deck, a live 15-minute pitch and a 7-minute VC-style Q&amp;A, as a team of seven.</dd></div>
+          <div><dt>The pitch</dt><dd>A 12-slide deck, a live 15-minute pitch and a 7-minute VC-style Q&amp;A, as a team of seven.</dd></div>
         </dl>
         <p class="fine">Projections from the course model, not operating results.</p>
       </div>
@@ -308,7 +307,7 @@
         <p class="pr-q">How much of the grunt work in equity research can a local model genuinely take off my hands?</p>
         <dl>
           <div><dt>What I&rsquo;m building</dt><dd>An experiment in running research workflows against a locally hosted model: surfacing companies tied to real market events and drafting the first pass of a note, with source checks kept deliberately strict.</dd></div>
-          <div><dt>The real question</dt><dd>Which parts of research are mechanical and which need judgement, and where a model should be trusted versus where it absolutely should not.</dd></div>
+          <div><dt>Open question</dt><dd>Which parts of research are mechanical and which need judgement, and where a model should and shouldn&rsquo;t be trusted.</dd></div>
         </dl>
       </div>
     </div>
@@ -326,7 +325,7 @@
         <p class="pr-q">Expense tracking fails because logging is a chore. What if you could just type &ldquo;180 Uber&rdquo;?</p>
         <dl>
           <div><dt>What I&rsquo;m building</dt><dd>An installable phone app that turns plain-language entries into structured transactions, local-first so the data stays mine and capture takes about two seconds.</dd></div>
-          <div><dt>The finance in it</dt><dd>How personal-finance data should actually be categorised, and why removing friction is the whole game in expense tracking.</dd></div>
+          <div><dt>The finance in it</dt><dd>Categorising personal-finance data properly, and keeping capture fast enough that you actually log things.</dd></div>
         </dl>
       </div>
     </div>
@@ -354,7 +353,7 @@
   <section class="night contact cta-band" aria-labelledby="close-h">
     <div class="wrap">
       <h2 class="h2 rv" id="close-h">Want to question any of this?</h2>
-      <p class="lead rv">That&rsquo;s the conversation I&rsquo;d most like to have. I&rsquo;m open to analyst internships now and full-time roles from 2027.</p>
+      <p class="lead rv">Happy to walk through any of it. I&rsquo;m open to analyst internships now and full-time roles from 2027.</p>
       <a class="mail rv" href="mailto:tejasgarg1702@gmail.com">tejasgarg1702@gmail.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
       <div class="c-links rv">
         <a href="https://www.linkedin.com/in/tejas-garg-806b4a22b" target="_blank" rel="noopener">LinkedIn <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg></a>
