@@ -765,7 +765,8 @@ table { border-collapse: collapse; width: 100%; }
 /* folded from the first paint, so nothing inside it (prints, handwriting font) loads until opened;
    if the script never runs, the head failsafe drops .js and the archive is simply open */
 .js .notes-folio:not(.is-shown) { display: none; }
-.notes-folio { --sit-h: 250px; margin-top: calc(var(--sit-h) * 0.5 + var(--sp-6)); }
+.notes-folio { --sit-h: 250px; display: flow-root; }
+.notes-folio > .folio { margin-top: calc(var(--sit-h) * 0.5 + var(--sp-6)); }
 .folio {
   position: relative;
   background: #f5f3eb;
@@ -837,17 +838,16 @@ table { border-collapse: collapse; width: 100%; }
 
 /* opening: the card unfolds downward from the signature's edge, prints settle one by one */
 @media (prefers-reduced-motion: no-preference) {
-  .js .notes-folio .folio { clip-path: inset(0 0 100% 0 round 14px); transform: translateY(-10px); transition: clip-path 650ms var(--ease), transform 650ms var(--ease); }
-  .js .notes-folio.is-open .folio { clip-path: inset(-400px -40px -40px -40px round 14px); transform: none; }
-  .js .notes-folio .print, .js .notes-folio .index-card { opacity: 0; translate: 0 14px; transition: opacity 500ms var(--ease), translate 600ms var(--ease), transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); }
+  .js .notes-folio .print, .js .notes-folio .index-card { opacity: 0; translate: 0 14px; transition: opacity 280ms var(--ease-out), translate 400ms var(--ease-out), transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); }
   .js .notes-folio.is-open .print, .js .notes-folio.is-open .index-card { opacity: 1; translate: 0 0; }
-  .js .notes-folio.is-open .p1 { transition-delay: 120ms, 120ms, 0s, 0s; }
-  .js .notes-folio.is-open .p2 { transition-delay: 200ms, 200ms, 0s, 0s; }
-  .js .notes-folio.is-open .p3 { transition-delay: 280ms, 280ms, 0s, 0s; }
-  .js .notes-folio.is-open .p4 { transition-delay: 360ms, 360ms, 0s, 0s; }
-  .js .notes-folio.is-open .p5 { transition-delay: 440ms, 440ms, 0s, 0s; }
-  .js .notes-folio.is-open .index-card { transition-delay: 520ms, 520ms, 0s, 0s; }
-  .js .notes-folio .sitter { opacity: 0; translate: 0 -16px; transition: opacity 400ms var(--ease) 560ms, translate 500ms var(--ease) 560ms; }
+  .js .notes-folio.is-open .p1 { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 120ms, 120ms, 0s, 0s; }
+  .js .notes-folio.is-open .p2 { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 200ms, 200ms, 0s, 0s; }
+  .js .notes-folio.is-open .p3 { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 280ms, 280ms, 0s, 0s; }
+  .js .notes-folio.is-open .p4 { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 360ms, 360ms, 0s, 0s; }
+  .js .notes-folio.is-open .p5 { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 440ms, 440ms, 0s, 0s; }
+  .js .notes-folio.is-open .index-card { transition-duration: 500ms, 600ms, var(--dur-normal), var(--dur-normal); transition-timing-function: var(--ease); transition-delay: 520ms, 520ms, 0s, 0s; }
+  .js .notes-folio .sitter { opacity: 0; translate: 0 -16px; transition: opacity 200ms var(--ease-out), translate 300ms var(--ease-out); }
+  .js .notes-folio.is-open .sitter { transition: opacity 400ms var(--ease) 560ms, translate 500ms var(--ease) 560ms; }
   .js .notes-folio.is-open .sitter { opacity: 1; translate: 0 0; }
 }
 

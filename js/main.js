@@ -353,34 +353,74 @@
       [].forEach.call(box.querySelectorAll('img[loading="lazy"]'), function (im) { im.loading = "eager"; });
     });
 
-    var timer = null;
+    /* one motion for opening and folding: the card's real height eases open or
+       shut while the page scrolls in step, so the content below glides instead
+       of jumping. Height animates only during this one-off ~0.7s gesture. */
+    var busy = false;
+    function ease(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+    function tween(dur, step, finish) {
+      if (reduce) { step(1); finish(); return; }
+      var root = doc.documentElement, t0 = null;
+      root.style.overflowAnchor = "none";
+      function f(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        step(ease(p));
+        if (p < 1) requestAnimationFrame(f);
+        else { root.style.overflowAnchor = ""; finish(); }
+      }
+      requestAnimationFrame(f);
+    }
+    /* taller cards travel further, so they take a little longer: 640-900ms */
+    function dur(h) { return Math.max(640, Math.min(900, 420 + h * 0.2)); }
+    function docTop(el) { return el.getBoundingClientRect().top + window.scrollY; }
+
     function open() {
-      clearTimeout(timer);
+      if (busy) return; busy = true;
       box.hidden = false;
       box.classList.add("is-shown");
+      box.style.overflow = "hidden";
+      box.style.height = "0px";
+      var H = box.scrollHeight;
       btn.setAttribute("aria-expanded", "true");
       if (act) act.textContent = "Close";
       box.getBoundingClientRect();
       box.classList.add("is-open");
-      [].forEach.call(box.querySelectorAll(".print-img"), function (w, i) { develop(w, 260 + i * 110); });
-      var top = box.getBoundingClientRect().top;
-      if (top > window.innerHeight * 0.6) box.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      [].forEach.call(box.querySelectorAll(".print-img"), function (w, i) { develop(w, 300 + i * 110); });
+      var start = window.scrollY;
+      var end = Math.max(start, docTop(btn) - 110);
+      tween(dur(H), function (e) {
+        box.style.height = (H * e) + "px";
+        window.scrollTo(0, start + (end - start) * e);
+      }, function () { box.style.height = ""; box.style.overflow = ""; busy = false; });
     }
     function close(refocus) {
+      if (busy) return; busy = true;
+      var H = box.offsetHeight;
+      box.style.overflow = "hidden";
+      box.style.height = H + "px";
       box.classList.remove("is-open");
       btn.setAttribute("aria-expanded", "false");
       if (act) act.textContent = "Open";
-      timer = setTimeout(function () { box.hidden = true; box.classList.remove("is-shown"); }, reduce ? 0 : 460);
-      if (refocus) btn.focus({ preventScroll: true });
+      var start = window.scrollY;
+      var r = btn.getBoundingClientRect();
+      var inView = r.top >= 70 && r.bottom <= window.innerHeight;
+      var end = inView ? start : Math.max(0, docTop(btn) - window.innerHeight * 0.4);
+      tween(dur(H), function (e) {
+        box.style.height = (H * (1 - e)) + "px";
+        window.scrollTo(0, start + (end - start) * e);
+      }, function () {
+        box.hidden = true;
+        box.classList.remove("is-shown");
+        box.style.height = ""; box.style.overflow = "";
+        busy = false;
+        if (refocus) btn.focus({ preventScroll: true });
+      });
     }
     btn.addEventListener("click", function () {
       if (btn.getAttribute("aria-expanded") === "true") close(false); else open();
     });
-    if (closer) closer.addEventListener("click", function () {
-      close(true);
-      var r = btn.getBoundingClientRect();
-      if (r.top < 0 || r.bottom > window.innerHeight) btn.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
-    });
+    if (closer) closer.addEventListener("click", function () { close(true); });
     box.addEventListener("keydown", function (e) { if (e.key === "Escape") close(true); });
   })();
 
