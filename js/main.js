@@ -215,7 +215,7 @@
       cut.appendChild(cv);
       return cv;
     });
-    fig.classList.add("printing");
+    fig.classList.add("inked", "printing");
 
     var finished = false;
     function done() {
@@ -344,7 +344,7 @@
     var btn = doc.querySelector(".tg-stamp");
     var box = doc.getElementById("field-notes");
     if (!btn || !box) return;
-    var act = btn.querySelector(".stamp-act");
+    var act = btn.querySelector(".stamp-word");
     var closer = box.querySelector(".folio-close");
     box.hidden = true;
 
@@ -359,7 +359,7 @@
       box.hidden = false;
       box.classList.add("is-shown");
       btn.setAttribute("aria-expanded", "true");
-      if (act) act.textContent = "fold";
+      if (act) act.textContent = "Close";
       box.getBoundingClientRect();
       box.classList.add("is-open");
       [].forEach.call(box.querySelectorAll(".print-img"), function (w, i) { develop(w, 260 + i * 110); });
@@ -369,7 +369,7 @@
     function close(refocus) {
       box.classList.remove("is-open");
       btn.setAttribute("aria-expanded", "false");
-      if (act) act.textContent = "open";
+      if (act) act.textContent = "Open";
       timer = setTimeout(function () { box.hidden = true; box.classList.remove("is-shown"); }, reduce ? 0 : 460);
       if (refocus) btn.focus({ preventScroll: true });
     }

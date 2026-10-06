@@ -748,8 +748,18 @@ table { border-collapse: collapse; width: 100%; }
 .stamp-meta { display: grid; gap: 2px; padding-bottom: 6px; }
 .stamp-k { font-size: var(--f-small); font-weight: 600; color: var(--ink); }
 .stamp-n { font-size: var(--f-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
-.stamp-act { color: var(--shift-a); font-weight: 600; transition: color var(--dur-fast) var(--ease-out); }
-.tg-stamp:hover .stamp-act { color: var(--shift-b); }
+.stamp-k { display: inline-flex; align-items: center; gap: 10px; }
+.stamp-act {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px 3px 11px; border-radius: 999px;
+  background: var(--shift-a); color: var(--paper);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.02em; line-height: 1.4;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.stamp-act svg { width: 12px; height: 12px; transition: transform var(--dur-normal) var(--ease-out); }
+.tg-stamp:hover .stamp-act, .tg-stamp:focus-visible .stamp-act { background: var(--shift-b); }
+.tg-stamp:hover .stamp-act svg { transform: translateY(1px); }
+.tg-stamp[aria-expanded="true"] .stamp-act svg { transform: rotate(180deg); }
 
 /* the folio: a card of a different stock, found inside the page */
 /* folded from the first paint, so nothing inside it (prints, handwriting font) loads until opened;
@@ -941,7 +951,9 @@ table { border-collapse: collapse; width: 100%; }
 /* the printed portrait: dithered ink canvas over the photograph while it develops */
 .cut-dither { position: absolute; left: -1.6%; top: 0.5%; width: 104%; aspect-ratio: 1040 / 1082; pointer-events: none; transition: opacity 650ms var(--ease); }
 /* 0.01, not 0: the photo still counts as painted (largest-paint metric) while the ink shows over it */
-.vignette.printing .cut img { animation: none; opacity: 0.01; }
+/* .inked stays after printing ends, so the CSS entrance never replays on the finished photo */
+.vignette.inked .cut img { animation: none; }
+.vignette.printing .cut img { opacity: 0.01; }
 .vignette.printing.printed .cut img { opacity: 1; transition: opacity 650ms var(--ease); }
 .vignette.printed .cut-dither { opacity: 0; }
 
