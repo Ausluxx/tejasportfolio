@@ -564,6 +564,7 @@ table { border-collapse: collapse; width: 100%; }
 .role-figs span { font-size: var(--f-small); color: var(--on-deep-2); line-height: var(--lh-lead); }
 .role-built { margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--on-deep-rule); font-size: var(--f-small); line-height: var(--lh-body); }
 .role-built b { color: var(--on-deep); font-weight: 600; }
+.role-built p + p { margin-top: var(--sp-3); }
 
 /* other campus roles: a ruled list in the same deep field */
 .campus { margin-top: var(--sp-7); }
